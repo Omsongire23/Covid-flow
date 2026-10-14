@@ -128,10 +128,39 @@ require_once APP_ROOT . '/includes/layout_header.php';
           </div>
         </div>
 
-        <div class="pattern-metadata-panel bg-surface-2 p-4 rounded border">
-          <div class="mb-3">
-            <span class="text-xs text-muted block uppercase font-bold mb-1">Active Regular Expression:</span>
-            <pre class="regex-code-block mb-0"><code id="tester-pattern">^[A-Za-z][A-Za-z0-9_]{3,19}$</code></pre>
+        <div class="pattern-metadata-panel card">
+          <div class="pattern-panel-header flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="badge badge-primary">Pattern Inspector</span>
+              <span class="text-xs text-muted font-bold uppercase tracking-wider">Active Regular Expression</span>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm btn-copy-pattern" id="btn-copy-pattern" title="Copy pattern to clipboard">
+              <svg class="icon icon-xs" aria-hidden="true"><use href="#icon-clipboard"></use></svg>
+              <span id="copy-btn-text">Copy</span>
+            </button>
+          </div>
+
+          <!-- Highlighted, clear, high-contrast regex terminal card -->
+          <div class="regex-display-card mb-3">
+            <div class="regex-display-header">
+              <span class="regex-lang-badge">ECMAScript /u &bull; PCRE ~...~Du</span>
+              <span class="regex-anchor-tag">Anchor Bounds (^...$)</span>
+            </div>
+            <div class="regex-code-wrapper">
+              <code class="regex-code" id="tester-pattern">^[A-Za-z][A-Za-z0-9_]{3,19}$</code>
+            </div>
+          </div>
+
+          <!-- Dual Engine Preview Boxes -->
+          <div class="grid grid-2 gap-2 mb-3">
+            <div class="engine-format-box">
+              <span class="engine-format-label">JavaScript (RegExp):</span>
+              <code class="engine-format-code" id="tester-pattern-js">/^[A-Za-z][A-Za-z0-9_]{3,19}$/u</code>
+            </div>
+            <div class="engine-format-box">
+              <span class="engine-format-label">PHP (PCRE Du):</span>
+              <code class="engine-format-code" id="tester-pattern-php">~^[A-Za-z][A-Za-z0-9_]{3,19}$~Du</code>
+            </div>
           </div>
 
           <div class="mb-3">
@@ -139,9 +168,9 @@ require_once APP_ROOT . '/includes/layout_header.php';
             <p id="tester-message" class="text-sm mb-0 text-muted">4–20 characters; start with a letter; letters, numbers and underscore only.</p>
           </div>
 
-          <div class="result-inspection-box mt-4 border-t pt-3">
-            <span class="text-xs text-muted block uppercase font-bold mb-2">Live Client Evaluation (ECMAScript <code>/u</code>):</span>
-            <div id="tester-result" class="badge badge-ok text-base py-2 px-3">
+          <div class="result-inspection-box mt-2 border-t pt-3 flex items-center justify-between">
+            <span class="text-xs text-muted uppercase font-bold">Live Client Evaluation:</span>
+            <div id="tester-result" class="badge badge-ok text-sm py-1 px-3">
               <span class="status-icon">✓</span> Valid
             </div>
           </div>

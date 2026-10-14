@@ -54,10 +54,14 @@ function setupLiveTester() {
   const select = document.getElementById('tester-field');
   const input = document.getElementById('tester-input');
   const patternDisplay = document.getElementById('tester-pattern');
+  const patternJsDisplay = document.getElementById('tester-pattern-js');
+  const patternPhpDisplay = document.getElementById('tester-pattern-php');
   const messageDisplay = document.getElementById('tester-message');
   const resultBadge = document.getElementById('tester-result');
   const btnValid = document.getElementById('btn-sample-valid');
   const btnInvalid = document.getElementById('btn-sample-invalid');
+  const btnCopy = document.getElementById('btn-copy-pattern');
+  const copyText = document.getElementById('copy-btn-text');
 
   if (!select || !input) return;
 
@@ -67,6 +71,8 @@ function setupLiveTester() {
     if (!info) return;
 
     if (patternDisplay) patternDisplay.textContent = info.pattern;
+    if (patternJsDisplay) patternJsDisplay.textContent = `/${info.pattern}/u`;
+    if (patternPhpDisplay) patternPhpDisplay.textContent = `~${info.pattern}~Du`;
     if (messageDisplay) messageDisplay.textContent = info.message;
     runLiveCheck();
   }
@@ -95,6 +101,27 @@ function setupLiveTester() {
 
   select.addEventListener('change', updateFieldInfo);
   input.addEventListener('input', runLiveCheck);
+
+  if (btnCopy) {
+    btnCopy.addEventListener('click', async () => {
+      const fieldKey = select.value;
+      const info = patterns[fieldKey];
+      if (!info) return;
+
+      try {
+        await navigator.clipboard.writeText(info.pattern);
+        if (copyText) copyText.textContent = 'Copied!';
+        btnCopy.classList.add('copied');
+        showToast(`Pattern for ${fieldKey} copied to clipboard!`, 'ok');
+        setTimeout(() => {
+          if (copyText) copyText.textContent = 'Copy';
+          btnCopy.classList.remove('copied');
+        }, 1800);
+      } catch (err) {
+        showToast(`Pattern: ${info.pattern}`, 'info');
+      }
+    });
+  }
 
   if (btnValid) {
     btnValid.addEventListener('click', () => {
