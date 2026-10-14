@@ -1,0 +1,18 @@
+# Environment and local credentials
+config/config.local.php
+.env
+
+# Storage and logs
+storage/logs/*.log
+storage/sessions/*
+
+# System and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary test artifacts
+/tmp/

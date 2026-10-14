@@ -1,0 +1,68 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: covid_db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_DATABASE: covid_portal
+      MARIADB_USER: covid_user
+      MARIADB_PASSWORD: covid_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    image: php:8.3-apache
+    container_name: covid_web
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html:ro
+      - ./public:/var/www/html/public:rw
+    working_dir: /var/www/html
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: covid_portal
+      DB_USER: covid_user
+      DB_PASS: covid_pass
+    command: >
+      bash -c "
+        docker-php-ext-install pdo pdo_mysql &&
+        a2enmod rewrite &&
+        sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf &&
+        sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf &&
+        apache2-foreground
+      "
+
+  php-cli:
+    image: php:8.3-cli
+    container_name: covid_php_cli
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: covid_portal
+      DB_USER: covid_user
+      DB_PASS: covid_pass
+    entrypoint: ["php"]
+
+volumes:
+  db_data:

@@ -1,0 +1,186 @@
+{
+  "lastReviewed": "2026-10-14",
+  "disclaimer": "This website is for general information and does not replace professional medical advice. In an emergency, contact your local emergency services or national helpline numbers.",
+  "prevention": [
+    {
+      "id": "masks",
+      "title": "Wear a Well-Fitted Mask",
+      "desc": "Wear a high-filtration mask (N95, FFP2, or well-fitted surgical mask) in crowded, enclosed, or poorly ventilated public spaces to filter airborne droplets.",
+      "category": "personal",
+      "source": "WHO Infection Prevention and Control Guidance",
+      "sourceUrl": "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public"
+    },
+    {
+      "id": "ventilation",
+      "title": "Improve Indoor Ventilation",
+      "desc": "Open windows and doors to increase natural airflow, or use air purifiers with HEPA filtration when gathering indoors.",
+      "category": "environment",
+      "source": "WHO Roadmap to improve and ensure good indoor ventilation in COVID-19 context",
+      "sourceUrl": "https://www.who.int/publications/i/item/9789240021280"
+    },
+    {
+      "id": "hygiene",
+      "title": "Practice Regular Hand Hygiene",
+      "desc": "Wash hands frequently with soap and water for at least 20 seconds, or use an alcohol-based hand rub with at least 60% alcohol.",
+      "category": "personal",
+      "source": "MoHFW Guidelines on Preventive Measures",
+      "sourceUrl": "https://www.mohfw.gov.in"
+    },
+    {
+      "id": "distance",
+      "title": "Maintain Physical Distance",
+      "desc": "Keep a physical distance of at least 1 metre (3 feet) from others, especially from individuals showing respiratory symptoms such as coughing or sneezing.",
+      "category": "personal",
+      "source": "WHO COVID-19 Advice for Public",
+      "sourceUrl": "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public"
+    },
+    {
+      "id": "isolation",
+      "title": "Self-Isolate When Unwell",
+      "desc": "If you experience fever, cough, fatigue, or other symptoms, stay home, separate yourself from household members, and seek medical consultation.",
+      "category": "clinical",
+      "source": "MoHFW Home Isolation Guidelines",
+      "sourceUrl": "https://www.mohfw.gov.in"
+    }
+  ],
+  "symptoms": {
+    "common": [
+      { "name": "Fever or Chills", "severity": "mild-to-moderate", "frequency": "Very Common (80-90%)" },
+      { "name": "Dry Cough", "severity": "mild-to-moderate", "frequency": "Very Common (60-70%)" },
+      { "name": "Fatigue & Body Aches", "severity": "mild-to-moderate", "frequency": "Common (40-50%)" },
+      { "name": "Loss of Taste or Smell (Anosmia)", "severity": "mild", "frequency": "Common (30-40%)" }
+    ],
+    "less_common": [
+      { "name": "Sore Throat", "severity": "mild", "frequency": "Less Common" },
+      { "name": "Headache", "severity": "mild-to-moderate", "frequency": "Less Common" },
+      { "name": "Congestion or Runny Nose", "severity": "mild", "frequency": "Less Common" },
+      { "name": "Nausea or Diarrhea", "severity": "mild", "frequency": "Less Common" }
+    ],
+    "emergency": [
+      { "name": "Difficulty Breathing or Shortness of Breath", "action": "Seek immediate emergency medical attention." },
+      { "name": "Persistent Pain or Pressure in the Chest", "action": "Call an ambulance or visit the nearest emergency department immediately." },
+      { "name": "Confusion or Inability to Stay Awake", "action": "Urgent hospitalization required." },
+      { "name": "Pale, Gray, or Blue-Colored Skin, Lips, or Nail Beds", "action": "Sign of hypoxemia — seek emergency oxygen therapy." }
+    ],
+    "source": "WHO Clinical Management of COVID-19",
+    "sourceUrl": "https://www.who.int/publications/i/item/WHO-2019-nCoV-clinical-2023.2"
+  },
+  "vaccination": [
+    {
+      "title": "Primary Vaccination Series",
+      "summary": "Protects against severe illness, hospitalization, and death caused by SARS-CoV-2. Approved vaccines stimulate the immune system to produce antibodies and T-cell responses.",
+      "details": "Most vaccines require 2 primary doses spaced 3 to 12 weeks apart depending on vaccine platform (mRNA, viral vector, or protein subunit).",
+      "source": "WHO Strategic Advisory Group of Experts (SAGE) Roadmap",
+      "sourceUrl": "https://www.who.int/groups/strategic-advisory-group-of-experts-on-immunization"
+    },
+    {
+      "title": "Precautionary / Booster Doses",
+      "summary": "Restores waning immunity, particularly for older adults, healthcare personnel, and individuals with underlying comorbidities.",
+      "details": "Updated formulations (bivalent or XBB variant-adapted) offer broader cross-neutralization against evolving sub-lineages.",
+      "source": "MoHFW National COVID-19 Vaccination Operational Guidelines",
+      "sourceUrl": "https://www.mohfw.gov.in"
+    },
+    {
+      "title": "Safety & Adverse Events Monitoring",
+      "summary": "Vaccines undergo extensive pre-clinical trials and continuous pharmacovigilance across billions of administered doses.",
+      "details": "Common side effects include mild fever, headache, muscle soreness, and injection site tenderness, typically resolving within 48 hours.",
+      "source": "WHO COVID-19 Vaccines Safety",
+      "sourceUrl": "https://www.who.int/news-room/questions-and-answers/item/coronavirus-disease-(covid-19)-vaccines-safety"
+    }
+  ],
+  "myths": [
+    {
+      "id": "m1",
+      "myth": "COVID-19 is just a common cold or influenza.",
+      "fact": "COVID-19 is caused by SARS-CoV-2, which has a higher mortality rate, higher transmissibility, and can cause systemic complications including multi-organ failure and Long COVID.",
+      "category": "disease",
+      "source": "WHO Mythbusters",
+      "sourceUrl": "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"
+    },
+    {
+      "id": "m2",
+      "myth": "Vaccines cause COVID-19 infection or alter human DNA.",
+      "fact": "COVID-19 vaccines do not contain live virus that can reproduce inside human cells, and mRNA vaccines never enter the nucleus of the cell where DNA is kept.",
+      "category": "vaccine",
+      "source": "WHO Science in 5: Vaccines and DNA",
+      "sourceUrl": "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"
+    },
+    {
+      "id": "m3",
+      "myth": "Antibiotics can prevent or treat COVID-19.",
+      "fact": "Antibiotics kill bacteria, not viruses. COVID-19 is viral. Antibiotics should only be prescribed if a secondary bacterial co-infection is diagnosed by a physician.",
+      "category": "treatment",
+      "source": "WHO Antimicrobial Resistance & COVID-19",
+      "sourceUrl": "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"
+    },
+    {
+      "id": "m4",
+      "myth": "Hot weather or drinking warm water prevents COVID-19 transmission.",
+      "fact": "You can catch COVID-19 no matter how sunny or hot the weather is. Countries with hot climates have documented high case volumes without environmental immunity.",
+      "category": "transmission",
+      "source": "WHO Mythbusters: Climate & Sunlight",
+      "sourceUrl": "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"
+    },
+    {
+      "id": "m5",
+      "myth": "Holding your breath for 10 seconds without coughing proves you don't have COVID-19.",
+      "fact": "Being able to hold your breath does not mean you are free from coronavirus or any other lung disease. A confirmed diagnosis requires laboratory testing (RT-PCR or Rapid Antigen).",
+      "category": "diagnosis",
+      "source": "WHO Mythbusters: Breath test myth",
+      "sourceUrl": "https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"
+    }
+  ],
+  "helplines": [
+    {
+      "name": "National Health Helpline (India)",
+      "number": "1075",
+      "tollFree": true,
+      "hours": "24x7",
+      "desc": "Toll-free national COVID-19 helpline for healthcare queries, guidance, and teleconsultation referrals.",
+      "source": "Ministry of Health and Family Welfare (MoHFW), Govt of India",
+      "sourceUrl": "https://www.mohfw.gov.in",
+      "lastVerified": "2026-10-14"
+    },
+    {
+      "name": "Central Health Ministry Control Room",
+      "number": "+91-11-23978046",
+      "tollFree": false,
+      "hours": "24x7",
+      "desc": "Direct telephone line for emergency escalation and central health query coordination.",
+      "source": "MoHFW Public Notification",
+      "sourceUrl": "https://www.mohfw.gov.in",
+      "lastVerified": "2026-10-14"
+    },
+    {
+      "name": "National Childline Helpline",
+      "number": "1098",
+      "tollFree": true,
+      "hours": "24x7",
+      "desc": "Emergency assistance for children in distress or affected by pandemic-related family emergencies.",
+      "source": "Ministry of Women and Child Development",
+      "sourceUrl": "https://wcd.nic.in",
+      "lastVerified": "2026-10-14"
+    },
+    {
+      "name": "Tele-MANAS Mental Health Assistance",
+      "number": "14416",
+      "tollFree": true,
+      "hours": "24x7",
+      "desc": "National tele-mental health programme providing psychological support, counseling, and distress relief.",
+      "source": "NIMHANS & MoHFW Tele-MANAS Initiative",
+      "sourceUrl": "https://telemanas.mohfw.gov.in",
+      "lastVerified": "2026-10-14"
+    }
+  ],
+  "indianStates": [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
+    "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+    "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+    "Uttar Pradesh", "Uttarakhand", "West Bengal",
+    "Andaman and Nicobar Islands", "Chandigarh",
+    "Dadra and Nagar Haveli and Daman and Diu",
+    "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+  ]
+}

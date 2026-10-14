@@ -1,0 +1,38 @@
+{
+  "username": {
+    "pattern": "^[A-Za-z][A-Za-z0-9_]{3,19}$",
+    "message": "4–20 characters; start with a letter; letters, numbers and underscore only."
+  },
+  "fullName": {
+    "pattern": "^(?=.{2,60}$)[\\p{L}\\p{M}]+(?:[ '\\-][\\p{L}\\p{M}]+)*$",
+    "message": "2–60 letters; single spaces, apostrophes or hyphens between words."
+  },
+  "email": {
+    "pattern": "^(?=.{6,254}$)(?!.*\\.\\.)[A-Za-z0-9](?:[A-Za-z0-9._%+\\-]*[A-Za-z0-9])?@(?:[A-Za-z0-9](?:[A-Za-z0-9\\-]{0,61}[A-Za-z0-9])?\\.)+[A-Za-z]{2,24}$",
+    "message": "Enter a valid email address, for example name@example.com."
+  },
+  "password": {
+    "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9\\s])\\S{8,64}$",
+    "message": "8–64 characters with an uppercase letter, a lowercase letter, a digit and a special character; no spaces."
+  },
+  "phoneIN": {
+    "pattern": "^(?:\\+91[\\- ]?|0)?[6-9]\\d{9}$",
+    "message": "Enter a 10-digit Indian mobile number starting with 6–9 (optional +91 or 0 prefix)."
+  },
+  "dob": {
+    "pattern": "^\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$",
+    "message": "Use the format YYYY-MM-DD."
+  },
+  "pinCode": {
+    "pattern": "^[1-9]\\d{5}$",
+    "message": "Enter a 6-digit PIN code that does not start with 0."
+  },
+  "countryQuery": {
+    "pattern": "^[\\p{L}\\p{M}][\\p{L}\\p{M} .'\\-]{1,55}$",
+    "message": "Search with 2–56 letters; spaces, dots, apostrophes and hyphens allowed."
+  },
+  "comment": {
+    "pattern": "^(?=[\\s\\S]{3,500}$)(?=[\\s\\S]*\\S)(?![\\s\\S]*<[^>]*>)[\\s\\S]*$",
+    "message": "3–500 characters, not blank, and no HTML tags."
+  }
+}
