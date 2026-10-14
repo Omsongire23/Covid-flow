@@ -2,7 +2,7 @@
 
 # Covid-flow
 
-### Dynamic COVID-19 Information Portal — Software Testing & Quality Assurance Mini Project
+### Dynamic COVID-19 Information Portal - Software Testing & Quality Assurance
 
 A responsive, accessible COVID-19 information website built with **HTML, CSS, JavaScript, PHP and MySQL**,
 backed by a documented **regular-expression test suite** that runs identically in the browser, in Node.js and in PHP.
