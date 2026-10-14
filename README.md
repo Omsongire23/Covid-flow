@@ -11,7 +11,6 @@ backed by a documented **regular-expression test suite** that runs identically i
 ![MariaDB](https://img.shields.io/badge/MySQL%20%2F%20MariaDB-InnoDB-003545?logo=mariadb&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES%20Modules-F7DF1E?logo=javascript&logoColor=black)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
-![Framework](https://img.shields.io/badge/framework-none-lightgrey)
 
 </div>
 
