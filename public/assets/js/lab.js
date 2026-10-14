@@ -94,8 +94,8 @@ function setupLiveTester() {
 
     const passed = regex.test(val);
     resultBadge.className = passed ? 'badge badge-ok' : 'badge badge-danger';
-    resultBadge.innerHTML = passed 
-      ? '<span class="status-icon">✓</span> Valid' 
+    resultBadge.innerHTML = passed
+      ? '<span class="status-icon">✓</span> Valid'
       : '<span class="status-icon">✕</span> Invalid';
   }
 

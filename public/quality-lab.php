@@ -150,26 +150,14 @@ require_once APP_ROOT . '/includes/layout_header.php';
           <!-- Regular Expression Display -->
           <div class="regex-display-card mb-3">
             <div class="regex-display-header">
-              <span class="regex-lang-badge">ECMAScript /u &bull; PCRE ~...~Du</span>
-              <span class="regex-anchor-tag">Anchor Bounds (^...$)</span>
+              <span class="regex-lang-badge">Rules</span>
+              <span class="regex-anchor-tag">Validation Requirements</span>
             </div>
             <div class="regex-code-wrapper">
-              <code class="regex-code" id="tester-pattern">^[A-Za-z][A-Za-z0-9_]{3,19}$</code>
+              <code class="regex-code" id="tester-pattern"></code>
             </div>
           </div>
-
-          <!-- Dual Engine Preview Boxes -->
-          <div class="grid grid-2 gap-2 mb-3">
-            <div class="engine-format-box">
-              <span class="engine-format-label">JavaScript (RegExp):</span>
-              <code class="engine-format-code" id="tester-pattern-js">/^[A-Za-z][A-Za-z0-9_]{3,19}$/u</code>
-            </div>
-            <div class="engine-format-box">
-              <span class="engine-format-label">PHP (PCRE Du):</span>
-              <code class="engine-format-code" id="tester-pattern-php">~^[A-Za-z][A-Za-z0-9_]{3,19}$~Du</code>
-            </div>
-          </div>
-
+          
           <!-- Validation Constraint -->
           <div class="mb-3">
             <span class="inspector-field-label">Validation Constraint Message:</span>
@@ -183,7 +171,7 @@ require_once APP_ROOT . '/includes/layout_header.php';
             <span class="inspector-field-label">Live Client Evaluation:</span>
             <div id="tester-result" class="badge badge-ok text-sm py-1 px-3" role="status" aria-live="polite">
               <span class="status-icon" aria-hidden="true">✓</span>
-              <span>Valid</span>
+              <span></span>
             </div>
           </div>
         </div>

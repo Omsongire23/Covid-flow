@@ -37,18 +37,6 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
   <!-- Hidden SVG Sprite Sheet -->
   <?php @include APP_ROOT . '/public/assets/img/sprite.svg'; ?>
 
-  <!-- Accessibility Skip Link -->
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Top Announcement / Public Health Disclaimer Banner -->
-  <aside class="announcement-bar" role="complementary" aria-label="Official Public Health Notice">
-    <div class="container announcement-content">
-      <span class="badge badge-info">Notice</span>
-      <span>Verified public health data from official health organizations &amp; disease.sh repository.</span>
-      <a href="/helplines.php" class="announcement-link">Emergency Helplines &rarr;</a>
-    </div>
-  </aside>
-
   <!-- Primary Site Header -->
   <header class="site-header" id="header">
     <div class="container header-container">

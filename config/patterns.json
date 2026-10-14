@@ -1,6 +1,6 @@
 {
   "username": {
-    "pattern": "^[A-Za-z][A-Za-z0-9_]{3,19}$",
+    "pattern": "A username must contain 4–20 characters, start with a letter, and include only letters, numbers, or underscores.",
     "message": "4–20 characters; start with a letter; letters, numbers and underscore only."
   },
   "fullName": {
