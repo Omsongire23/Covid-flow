@@ -95,6 +95,21 @@
   overflow: hidden;
 }
 .card-body { padding: var(--space-6); }
+
+/* Card prose helpers — readable section titles and descriptions */
+.card-title {
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+  margin-bottom: var(--space-1);
+}
+
+.card-desc {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: var(--space-1);
+}
+
 .card-header {
   padding: var(--space-5) var(--space-6);
   border-bottom: 1px solid var(--border);

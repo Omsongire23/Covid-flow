@@ -511,6 +511,47 @@
   height: 100%;
 }
 
+/* Explainer card body — proper readable prose, not tiny muted text */
+.explainer-body {
+  font-size: var(--font-size-sm);
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.explainer-body p {
+  color: var(--text);
+}
+
+.explainer-body em {
+  color: var(--primary);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.explainer-body strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Inline code in prose text — readable, clearly styled, not tiny */
+.inline-code {
+  font-family: var(--mono);
+  font-size: 0.82em;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-soft);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  border: 1px solid rgba(2, 132, 199, 0.2);
+  white-space: nowrap;
+}
+
+:root[data-theme="dark"] .inline-code {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
 .lab-pattern-display {
   font-family: var(--mono);
   font-size: var(--font-size-sm);

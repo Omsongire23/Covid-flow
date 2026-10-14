@@ -44,12 +44,12 @@ require_once APP_ROOT . '/includes/layout_header.php';
           <h2 class="card-title text-base">Trailing Newline Defense</h2>
         </div>
       </div>
-      <div class="card-body text-xs text-muted leading-relaxed">
+      <div class="card-body explainer-body">
         <p class="mb-2">
-          By default in PHP (PCRE), the <code>$</code> anchor matches <em>before</em> a trailing newline (<code>\n</code>), allowing malicious payloads like <code>"user\n"</code> to slip past standard validation.
+          By default in PHP (PCRE), the <code class="inline-code">$</code> anchor matches <em>before</em> a trailing newline (<code class="inline-code">\n</code>), allowing malicious payloads like <code class="inline-code">&quot;user\n&quot;</code> to slip past standard validation.
         </p>
         <p class="mb-0">
-          Enforcing delimiter modifier <code>~...~Du</code> ensures absolute end-of-string alignment, guaranteeing strict 100% equivalence with browser JavaScript.
+          Enforcing delimiter modifier <code class="inline-code">~...~Du</code> ensures absolute end-of-string alignment, guaranteeing strict 100% equivalence with browser JavaScript.
         </p>
       </div>
     </div>
@@ -62,12 +62,12 @@ require_once APP_ROOT . '/includes/layout_header.php';
           <h2 class="card-title text-base">Linear-Time Backtracking</h2>
         </div>
       </div>
-      <div class="card-body text-xs text-muted leading-relaxed">
+      <div class="card-body explainer-body">
         <p class="mb-2">
           Hostile nested patterns without length caps can induce quadratic backtracking (catastrophic ReDoS), taking &gt;7.5 seconds on 100k malicious characters.
         </p>
         <p class="mb-0">
-          Our patterns check bounded length <code>(?=[\s\S]{3,500}$)</code> <em>first</em> before any tag inspection, executing across hostile 100,000-character inputs in <strong>under 2 ms</strong>.
+          Our patterns check bounded length <code class="inline-code">(?=[\s\S]{3,500}$)</code> <em>first</em> before any tag inspection, executing across hostile 100,000-character inputs in <strong>under 2 ms</strong>.
         </p>
       </div>
     </div>
@@ -80,12 +80,12 @@ require_once APP_ROOT . '/includes/layout_header.php';
           <h2 class="card-title text-base">Shape vs. Semantic Split</h2>
         </div>
       </div>
-      <div class="card-body text-xs text-muted leading-relaxed">
+      <div class="card-body explainer-body">
         <p class="mb-2">
           Regular expressions validate structural syntax (digits, separators, character classes).
         </p>
         <p class="mb-0">
-          Semantic validity (e.g. <code>checkdate()</code> preventing non-existent February 31st dates, age constraints 5–120, and phone normalisation) is strictly enforced in the backend validator.
+          Semantic validity (e.g. <code class="inline-code">checkdate()</code> preventing non-existent February 31st dates, age constraints 5&ndash;120, and phone normalisation) is strictly enforced in the backend validator.
         </p>
       </div>
     </div>
