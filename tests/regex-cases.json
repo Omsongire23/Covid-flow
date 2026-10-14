@@ -1,144 +1,605 @@
 {
   "username": [
-    { "in": "john_doe", "ok": true },
-    { "in": "Om123", "ok": true },
-    { "in": "abcd", "ok": true, "note": "minimum length 4" },
-    { "gen": { "prefix": "A", "repeat": "b", "times": 19 }, "ok": true, "note": "maximum length 20" },
-    { "in": "abc", "ok": false, "note": "too short" },
-    { "gen": { "prefix": "A", "repeat": "b", "times": 20 }, "ok": false, "note": "21 characters" },
-    { "in": "1abcd", "ok": false, "note": "starts with digit" },
-    { "in": "_abcd", "ok": false, "note": "starts with underscore" },
-    { "in": "john doe", "ok": false },
-    { "in": "john-doe", "ok": false },
-    { "in": "", "ok": false },
-    { "in": "abcd\n", "ok": false, "note": "TC-REG-NEWLINE: trailing newline must be rejected (PCRE D flag)" },
-    { "in": "admin<script>", "ok": false },
-    { "in": "bob'; DROP TABLE users;--", "ok": false, "note": "SQL injection attempt" }
+    {
+      "in": "john_doe",
+      "ok": true
+    },
+    {
+      "in": "Om123",
+      "ok": true
+    },
+    {
+      "in": "abcd",
+      "ok": true,
+      "note": "minimum length 4"
+    },
+    {
+      "gen": {
+        "prefix": "A",
+        "repeat": "b",
+        "times": 19
+      },
+      "ok": true,
+      "note": "maximum length 20"
+    },
+    {
+      "in": "abc",
+      "ok": false,
+      "note": "too short"
+    },
+    {
+      "gen": {
+        "prefix": "A",
+        "repeat": "b",
+        "times": 20
+      },
+      "ok": false,
+      "note": "21 characters"
+    },
+    {
+      "in": "1abcd",
+      "ok": false,
+      "note": "starts with digit"
+    },
+    {
+      "in": "_abcd",
+      "ok": false,
+      "note": "starts with underscore"
+    },
+    {
+      "in": "john doe",
+      "ok": false
+    },
+    {
+      "in": "john-doe",
+      "ok": false
+    },
+    {
+      "in": "",
+      "ok": false
+    },
+    {
+      "in": "abcd\n",
+      "ok": false,
+      "note": "TC-REG-NEWLINE: trailing newline must be rejected (PCRE D flag)"
+    },
+    {
+      "in": "admin<script>",
+      "ok": false
+    },
+    {
+      "in": "bob'; DROP TABLE users;--",
+      "ok": false,
+      "note": "SQL injection attempt"
+    }
   ],
   "fullName": [
-    { "in": "Om Patil", "ok": true },
-    { "in": "Mary-Jane O'Neil", "ok": true },
-    { "in": "Al", "ok": true, "note": "minimum length 2" },
-    { "in": "José", "ok": true, "note": "accented letter" },
-    { "in": "सुरेश पाटिल", "ok": true, "note": "Devanagari with vowel signs (\\p{M})" },
-    { "in": "Anna Maria Lopez", "ok": true },
-    { "in": "A", "ok": false },
-    { "in": "John3", "ok": false },
-    { "in": "John  Doe", "ok": false, "note": "double space" },
-    { "in": "-John", "ok": false },
-    { "in": "John-", "ok": false },
-    { "gen": { "repeat": "A", "times": 61 }, "ok": false },
-    { "in": "", "ok": false },
-    { "in": "John\n", "ok": false, "note": "TC-REG-NEWLINE" },
-    { "in": "<b>Bob</b>", "ok": false }
+    {
+      "in": "Om Patil",
+      "ok": true
+    },
+    {
+      "in": "Mary-Jane O'Neil",
+      "ok": true
+    },
+    {
+      "in": "Al",
+      "ok": true,
+      "note": "minimum length 2"
+    },
+    {
+      "in": "José",
+      "ok": true,
+      "note": "accented letter"
+    },
+    {
+      "in": "सुरेश पाटिल",
+      "ok": true,
+      "note": "Devanagari with vowel signs (\\p{M})"
+    },
+    {
+      "in": "Anna Maria Lopez",
+      "ok": true
+    },
+    {
+      "in": "A",
+      "ok": false
+    },
+    {
+      "in": "John3",
+      "ok": false
+    },
+    {
+      "in": "John  Doe",
+      "ok": false,
+      "note": "double space"
+    },
+    {
+      "in": "-John",
+      "ok": false
+    },
+    {
+      "in": "John-",
+      "ok": false
+    },
+    {
+      "gen": {
+        "repeat": "A",
+        "times": 61
+      },
+      "ok": false
+    },
+    {
+      "in": "",
+      "ok": false
+    },
+    {
+      "in": "John\n",
+      "ok": false,
+      "note": "TC-REG-NEWLINE"
+    },
+    {
+      "in": "<b>Bob</b>",
+      "ok": false
+    }
   ],
   "email": [
-    { "in": "user@example.com", "ok": true },
-    { "in": "first.last+tag@sub.example.co.in", "ok": true },
-    { "in": "a@b.co", "ok": true, "note": "shortest realistic address" },
-    { "in": "user@example", "ok": false, "note": "no TLD" },
-    { "in": "user@@example.com", "ok": false },
-    { "in": "user@.com", "ok": false },
-    { "in": "user..name@example.com", "ok": false, "note": "consecutive dots" },
-    { "in": "user.@example.com", "ok": false },
-    { "in": ".user@example.com", "ok": false },
-    { "in": "user name@example.com", "ok": false },
-    { "in": "user@exam_ple.com", "ok": false },
-    { "in": "user@example.c", "ok": false, "note": "one-letter TLD" },
-    { "in": "a@b.c", "ok": false },
-    { "in": "", "ok": false },
-    { "in": "user@example.com\n", "ok": false, "note": "TC-REG-NEWLINE" }
+    {
+      "in": "user@example.com",
+      "ok": true
+    },
+    {
+      "in": "first.last+tag@sub.example.co.in",
+      "ok": true
+    },
+    {
+      "in": "a@b.co",
+      "ok": true,
+      "note": "shortest realistic address"
+    },
+    {
+      "in": "user@example",
+      "ok": false,
+      "note": "no TLD"
+    },
+    {
+      "in": "user@@example.com",
+      "ok": false
+    },
+    {
+      "in": "user@.com",
+      "ok": false
+    },
+    {
+      "in": "user..name@example.com",
+      "ok": false,
+      "note": "consecutive dots"
+    },
+    {
+      "in": "user.@example.com",
+      "ok": false
+    },
+    {
+      "in": ".user@example.com",
+      "ok": false
+    },
+    {
+      "in": "user name@example.com",
+      "ok": false
+    },
+    {
+      "in": "user@exam_ple.com",
+      "ok": false
+    },
+    {
+      "in": "user@example.c",
+      "ok": false,
+      "note": "one-letter TLD"
+    },
+    {
+      "in": "a@b.c",
+      "ok": false
+    },
+    {
+      "in": "",
+      "ok": false
+    },
+    {
+      "in": "user@example.com\n",
+      "ok": false,
+      "note": "TC-REG-NEWLINE"
+    }
   ],
   "password": [
-    { "in": "Passw0rd!", "ok": true },
-    { "in": "Abcdef1#", "ok": true, "note": "minimum length 8" },
-    { "in": "Str0ng&Secure#2026", "ok": true },
-    { "gen": { "repeat": "P", "times": 30, "suffix": "a1!" }, "ok": true, "note": "33 characters" },
-    { "in": "password", "ok": false, "note": "only lowercase" },
-    { "in": "PASSWORD1!", "ok": false, "note": "no lowercase" },
-    { "in": "Password!", "ok": false, "note": "no digit" },
-    { "in": "Password1", "ok": false, "note": "no special" },
-    { "in": "Pa1!", "ok": false, "note": "too short" },
-    { "in": "Pass word1!", "ok": false, "note": "contains space" },
-    { "gen": { "prefix": "Aa1!", "repeat": "x", "times": 61 }, "ok": false, "note": "65 characters" },
-    { "in": "", "ok": false }
+    {
+      "in": "Passw0rd!",
+      "ok": true
+    },
+    {
+      "in": "Abcdef1#",
+      "ok": true,
+      "note": "minimum length 8"
+    },
+    {
+      "in": "Str0ng&Secure#2026",
+      "ok": true
+    },
+    {
+      "gen": {
+        "repeat": "P",
+        "times": 30,
+        "suffix": "a1!"
+      },
+      "ok": true,
+      "note": "33 characters"
+    },
+    {
+      "in": "password",
+      "ok": false,
+      "note": "only lowercase"
+    },
+    {
+      "in": "PASSWORD1!",
+      "ok": false,
+      "note": "no lowercase"
+    },
+    {
+      "in": "Password!",
+      "ok": false,
+      "note": "no digit"
+    },
+    {
+      "in": "Password1",
+      "ok": false,
+      "note": "no special"
+    },
+    {
+      "in": "Pa1!",
+      "ok": false,
+      "note": "too short"
+    },
+    {
+      "in": "Pass word1!",
+      "ok": false,
+      "note": "contains space"
+    },
+    {
+      "gen": {
+        "prefix": "Aa1!",
+        "repeat": "x",
+        "times": 61
+      },
+      "ok": false,
+      "note": "65 characters"
+    },
+    {
+      "in": "",
+      "ok": false
+    }
   ],
   "phoneIN": [
-    { "in": "9876543210", "ok": true },
-    { "in": "+919876543210", "ok": true },
-    { "in": "+91 9876543210", "ok": true },
-    { "in": "+91-9876543210", "ok": true },
-    { "in": "09876543210", "ok": true },
-    { "in": "5876543210", "ok": false, "note": "first digit must be 6-9" },
-    { "in": "987654321", "ok": false, "note": "9 digits" },
-    { "in": "98765432101", "ok": false, "note": "11 digits without prefix" },
-    { "in": "+91  9876543210", "ok": false, "note": "two spaces" },
-    { "in": "98765 43210", "ok": false, "note": "inner space" },
-    { "in": "abcdefghij", "ok": false },
-    { "in": "+91\n9876543210", "ok": false },
-    { "in": "9876543210\n", "ok": false, "note": "TC-REG-NEWLINE" },
-    { "in": "", "ok": false }
+    {
+      "in": "9876543210",
+      "ok": true
+    },
+    {
+      "in": "+919876543210",
+      "ok": true
+    },
+    {
+      "in": "+91 9876543210",
+      "ok": true
+    },
+    {
+      "in": "+91-9876543210",
+      "ok": true
+    },
+    {
+      "in": "09876543210",
+      "ok": true
+    },
+    {
+      "in": "5876543210",
+      "ok": false,
+      "note": "first digit must be 6-9"
+    },
+    {
+      "in": "987654321",
+      "ok": false,
+      "note": "9 digits"
+    },
+    {
+      "in": "98765432101",
+      "ok": false,
+      "note": "11 digits without prefix"
+    },
+    {
+      "in": "+91  9876543210",
+      "ok": false,
+      "note": "two spaces"
+    },
+    {
+      "in": "98765 43210",
+      "ok": false,
+      "note": "inner space"
+    },
+    {
+      "in": "abcdefghij",
+      "ok": false
+    },
+    {
+      "in": "+91\n9876543210",
+      "ok": false
+    },
+    {
+      "in": "9876543210\n",
+      "ok": false,
+      "note": "TC-REG-NEWLINE"
+    },
+    {
+      "in": "",
+      "ok": false
+    }
   ],
   "dob": [
-    { "in": "2000-01-31", "ok": true },
-    { "in": "1999-12-01", "ok": true },
-    { "in": "2024-02-29", "ok": true, "note": "valid leap day" },
-    { "in": "2023-02-31", "ok": true, "note": "shape-valid only; the validator must reject it with checkdate() (see validator_test.php)" },
-    { "in": "2000-13-01", "ok": false },
-    { "in": "2000-00-10", "ok": false },
-    { "in": "2000-01-32", "ok": false },
-    { "in": "2000-1-1", "ok": false },
-    { "in": "01-01-2000", "ok": false },
-    { "in": "2000/01/01", "ok": false },
-    { "in": "2000-01-01\n", "ok": false, "note": "TC-REG-NEWLINE" },
-    { "in": "", "ok": false }
+    {
+      "in": "2000-01-31",
+      "ok": true
+    },
+    {
+      "in": "1999-12-01",
+      "ok": true
+    },
+    {
+      "in": "2024-02-29",
+      "ok": true,
+      "note": "valid leap day"
+    },
+    {
+      "in": "2023-02-31",
+      "ok": true,
+      "note": "shape-valid only; the validator must reject it with checkdate() (see validator_test.php)"
+    },
+    {
+      "in": "2000-13-01",
+      "ok": false
+    },
+    {
+      "in": "2000-00-10",
+      "ok": false
+    },
+    {
+      "in": "2000-01-32",
+      "ok": false
+    },
+    {
+      "in": "2000-1-1",
+      "ok": false
+    },
+    {
+      "in": "01-01-2000",
+      "ok": false
+    },
+    {
+      "in": "2000/01/01",
+      "ok": false
+    },
+    {
+      "in": "2000-01-01\n",
+      "ok": false,
+      "note": "TC-REG-NEWLINE"
+    },
+    {
+      "in": "",
+      "ok": false
+    }
   ],
   "pinCode": [
-    { "in": "411001", "ok": true },
-    { "in": "422001", "ok": true },
-    { "in": "999999", "ok": true },
-    { "in": "011001", "ok": false, "note": "leading zero" },
-    { "in": "41100", "ok": false },
-    { "in": "4110011", "ok": false },
-    { "in": "41100a", "ok": false },
-    { "in": "411 001", "ok": false },
-    { "in": "", "ok": false }
+    {
+      "in": "411001",
+      "ok": true
+    },
+    {
+      "in": "422001",
+      "ok": true
+    },
+    {
+      "in": "999999",
+      "ok": true
+    },
+    {
+      "in": "011001",
+      "ok": false,
+      "note": "leading zero"
+    },
+    {
+      "in": "41100",
+      "ok": false
+    },
+    {
+      "in": "4110011",
+      "ok": false
+    },
+    {
+      "in": "41100a",
+      "ok": false
+    },
+    {
+      "in": "411 001",
+      "ok": false
+    },
+    {
+      "in": "",
+      "ok": false
+    }
   ],
   "countryQuery": [
-    { "in": "India", "ok": true },
-    { "in": "United States", "ok": true },
-    { "in": "Cote d'Ivoire", "ok": true },
-    { "in": "Côte d'Ivoire", "ok": true, "note": "accented" },
-    { "in": "Türkiye", "ok": true },
-    { "in": "Guinea-Bissau", "ok": true },
-    { "in": "St. Lucia", "ok": true },
-    { "in": "Us", "ok": true, "note": "minimum length 2" },
-    { "gen": { "repeat": "A", "times": 56 }, "ok": true, "note": "maximum length 56" },
-    { "in": "I", "ok": false },
-    { "in": "1India", "ok": false },
-    { "in": "India123", "ok": false },
-    { "in": "India;DROP TABLE", "ok": false },
-    { "in": "../etc/passwd", "ok": false },
-    { "gen": { "repeat": "A", "times": 57 }, "ok": false },
-    { "in": "", "ok": false }
+    {
+      "in": "India",
+      "ok": true
+    },
+    {
+      "in": "United States",
+      "ok": true
+    },
+    {
+      "in": "Cote d'Ivoire",
+      "ok": true
+    },
+    {
+      "in": "Côte d'Ivoire",
+      "ok": true,
+      "note": "accented"
+    },
+    {
+      "in": "Türkiye",
+      "ok": true
+    },
+    {
+      "in": "Guinea-Bissau",
+      "ok": true
+    },
+    {
+      "in": "St. Lucia",
+      "ok": true
+    },
+    {
+      "in": "Us",
+      "ok": true,
+      "note": "minimum length 2"
+    },
+    {
+      "gen": {
+        "repeat": "A",
+        "times": 56
+      },
+      "ok": true,
+      "note": "maximum length 56"
+    },
+    {
+      "in": "I",
+      "ok": false
+    },
+    {
+      "in": "1India",
+      "ok": false
+    },
+    {
+      "in": "India123",
+      "ok": false
+    },
+    {
+      "in": "India;DROP TABLE",
+      "ok": false
+    },
+    {
+      "in": "../etc/passwd",
+      "ok": false
+    },
+    {
+      "gen": {
+        "repeat": "A",
+        "times": 57
+      },
+      "ok": false
+    },
+    {
+      "in": "",
+      "ok": false
+    }
   ],
   "comment": [
-    { "in": "Stay safe everyone!", "ok": true },
-    { "in": "Thanks for the update.", "ok": true },
-    { "in": "abc", "ok": true, "note": "minimum length 3" },
-    { "in": "नमस्ते, सुरक्षित रहें", "ok": true, "note": "non-Latin text" },
-    { "in": "I like a<b", "ok": true, "note": "lone < is allowed; only tag-like <...> is rejected" },
-    { "in": "line one\nline two", "ok": true, "note": "newlines allowed" },
-    { "gen": { "repeat": "x", "times": 500 }, "ok": true, "note": "exactly 500" },
-    { "gen": { "repeat": "x", "times": 499, "suffix": "é" }, "ok": true, "note": "500 characters including a multibyte character (requires u flag in PHP)" },
-    { "in": "ab", "ok": false },
-    { "in": "   ", "ok": false, "note": "whitespace only" },
-    { "in": "<script>alert(1)</script>", "ok": false },
-    { "in": "hello <b>world</b>", "ok": false },
-    { "in": "line one\nline <img src=x>", "ok": false, "note": "tag on second line" },
-    { "in": "5 < 6 and 7 > 3", "ok": false, "note": "documented false positive: looks like a tag to the pattern" },
-    { "gen": { "repeat": "x", "times": 501 }, "ok": false },
-    { "gen": { "repeat": "x", "times": 499, "suffix": "éx" }, "ok": false, "note": "501 characters" },
-    { "in": "", "ok": false }
+    {
+      "in": "Stay safe everyone!",
+      "ok": true
+    },
+    {
+      "in": "Thanks for the update.",
+      "ok": true
+    },
+    {
+      "in": "abc",
+      "ok": true,
+      "note": "minimum length 3"
+    },
+    {
+      "in": "नमस्ते, सुरक्षित रहें",
+      "ok": true,
+      "note": "non-Latin text"
+    },
+    {
+      "in": "I like a<b",
+      "ok": true,
+      "note": "lone < is allowed; only tag-like <...> is rejected"
+    },
+    {
+      "in": "line one\nline two",
+      "ok": true,
+      "note": "newlines allowed"
+    },
+    {
+      "gen": {
+        "repeat": "x",
+        "times": 500
+      },
+      "ok": true,
+      "note": "exactly 500"
+    },
+    {
+      "gen": {
+        "repeat": "x",
+        "times": 499,
+        "suffix": "é"
+      },
+      "ok": true,
+      "note": "500 characters including a multibyte character (requires u flag in PHP)"
+    },
+    {
+      "in": "ab",
+      "ok": false
+    },
+    {
+      "in": "   ",
+      "ok": false,
+      "note": "whitespace only"
+    },
+    {
+      "in": "<script>alert(1)</script>",
+      "ok": false
+    },
+    {
+      "in": "hello <b>world</b>",
+      "ok": false
+    },
+    {
+      "in": "line one\nline <img src=x>",
+      "ok": false,
+      "note": "tag on second line"
+    },
+    {
+      "in": "5 < 6 and 7 > 3",
+      "ok": false,
+      "note": "documented false positive: looks like a tag to the pattern"
+    },
+    {
+      "gen": {
+        "repeat": "x",
+        "times": 501
+      },
+      "ok": false
+    },
+    {
+      "gen": {
+        "repeat": "x",
+        "times": 499,
+        "suffix": "éx"
+      },
+      "ok": false,
+      "note": "501 characters"
+    },
+    {
+      "in": "",
+      "ok": false
+    }
   ]
 }

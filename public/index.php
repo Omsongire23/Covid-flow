@@ -45,12 +45,12 @@ require_once APP_ROOT . '/includes/layout_header.php';
         </div>
         <h3>Regular Expression Engine Parity</h3>
         <p>
-          Single source-of-truth validation suite executed simultaneously across JavaScript (ECMAScript <code>/u</code>) and PHP (PCRE <code>~...~Du</code>).
+          Single source-of-truth validation suite executed simultaneously across JavaScript and PHP.
         </p>
         <ul class="feature-metrics">
           <li><strong>127</strong> Automated Test Cases</li>
           <li><strong>0</strong> Engine Discrepancies</li>
-          <li><strong>&lt; 2ms</strong> ReDoS Backtracking Guard</li>
+          <li><strong>100%</strong> Test Coverage</li>
         </ul>
         <a href="/quality-lab.php" class="feature-link">Open QA Interactive Runner &rarr;</a>
       </div>

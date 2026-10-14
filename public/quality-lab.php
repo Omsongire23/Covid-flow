@@ -27,7 +27,7 @@ require_once APP_ROOT . '/includes/layout_header.php';
         <span class="badge badge-primary">SQA Core Deliverable &bull; FR-10</span>
       </div>
       <p class="page-subtitle">
-        Interactive test engineering workbench verifying input validation patterns, dual-engine cross-parity (ECMAScript <code>/u</code> vs PHP PCRE <code>~...~Du</code>), and ReDoS resistance.
+        Interactive test engineering workbench verifying input validation patterns, dual-engine cross-parity vs PHP, and ReDoS resistance.
       </p>
     </div>
   </div>
@@ -46,7 +46,7 @@ require_once APP_ROOT . '/includes/layout_header.php';
       </div>
       <div class="card-body explainer-body">
         <p class="mb-2">
-          By default in PHP (PCRE), the <code class="inline-code">$</code> anchor matches <em>before</em> a trailing newline (<code class="inline-code">\n</code>), allowing malicious payloads like <code class="inline-code">&quot;user\n&quot;</code> to slip past standard validation.
+          By default in PHP (PCRE), the <code class="inline-code">$</code> anchor matches <em>before</em> a trailing newline (<code class="inline-code">\n</code>), allowing malicious payloads like <code class="inline-code">"user\n"</code> to slip past standard validation.
         </p>
         <p class="mb-0">
           Enforcing delimiter modifier <code class="inline-code">~...~Du</code> ensures absolute end-of-string alignment, guaranteeing strict 100% equivalence with browser JavaScript.
@@ -129,18 +129,25 @@ require_once APP_ROOT . '/includes/layout_header.php';
         </div>
 
         <div class="pattern-metadata-panel card">
+          <!-- Panel Header -->
           <div class="pattern-panel-header flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
               <span class="badge badge-primary">Pattern Inspector</span>
               <span class="inspector-panel-label">Active Regular Expression</span>
             </div>
-            <button type="button" class="btn btn-ghost btn-sm btn-copy-pattern" id="btn-copy-pattern" title="Copy pattern to clipboard">
+            <button
+              type="button"
+              class="btn btn-ghost btn-sm btn-copy-pattern"
+              id="btn-copy-pattern"
+              title="Copy pattern to clipboard"
+              aria-label="Copy regular expression"
+            >
               <svg class="icon icon-xs" aria-hidden="true"><use href="#icon-clipboard"></use></svg>
               <span id="copy-btn-text">Copy</span>
             </button>
           </div>
 
-          <!-- Highlighted, clear, high-contrast regex terminal card -->
+          <!-- Regular Expression Display -->
           <div class="regex-display-card mb-3">
             <div class="regex-display-header">
               <span class="regex-lang-badge">ECMAScript /u &bull; PCRE ~...~Du</span>
@@ -163,15 +170,20 @@ require_once APP_ROOT . '/includes/layout_header.php';
             </div>
           </div>
 
+          <!-- Validation Constraint -->
           <div class="mb-3">
             <span class="inspector-field-label">Validation Constraint Message:</span>
-            <p id="tester-message" class="inspector-field-value text-sm mb-0">4–20 characters; start with a letter; letters, numbers and underscore only.</p>
+            <p id="tester-message" class="inspector-field-value text-sm mb-0">
+              4–20 characters; start with a letter; letters, numbers and underscores only.
+            </p>
           </div>
 
+          <!-- Live Validation Result -->
           <div class="result-inspection-box mt-2 border-t pt-3 flex items-center justify-between">
             <span class="inspector-field-label">Live Client Evaluation:</span>
-            <div id="tester-result" class="badge badge-ok text-sm py-1 px-3">
-              <span class="status-icon">✓</span> Valid
+            <div id="tester-result" class="badge badge-ok text-sm py-1 px-3" role="status" aria-live="polite">
+              <span class="status-icon" aria-hidden="true">✓</span>
+              <span>Valid</span>
             </div>
           </div>
         </div>
