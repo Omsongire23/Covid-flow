@@ -800,10 +800,10 @@
 
 .regex-lang-badge {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  color: #94a3b8;
-  letter-spacing: 0.05em;
+  color: #cbd5e1;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
@@ -831,7 +831,8 @@
   color: #38bdf8;
   letter-spacing: 0.035em;
   line-height: 1.55;
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-break: break-word;
   white-space: pre-wrap;
   display: block;
   user-select: all;
@@ -849,19 +850,23 @@
 }
 
 .engine-format-label {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
 }
 
 .engine-format-code {
   font-family: var(--mono);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 700;
   color: var(--primary);
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+  line-height: 1.5;
 }
 
 .btn-copy-pattern {
@@ -889,4 +894,33 @@
   color: var(--ok) !important;
   border-color: var(--ok) !important;
   background: var(--ok-soft) !important;
+}
+
+/* ── Pattern Inspector: Readable Label Classes ─────────────────────────────── */
+/* "Active Regular Expression" — full-contrast, bold, clearly readable */
+.inspector-panel-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+/* Sub-field labels inside the inspector card */
+.inspector-field-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  opacity: 0.8;
+  margin-bottom: 0.3rem;
+}
+
+/* Field value body text (e.g. constraint message) */
+.inspector-field-value {
+  color: var(--text);
+  line-height: 1.65;
+  font-size: var(--font-size-sm);
 }

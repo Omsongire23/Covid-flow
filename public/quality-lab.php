@@ -132,7 +132,7 @@ require_once APP_ROOT . '/includes/layout_header.php';
           <div class="pattern-panel-header flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
               <span class="badge badge-primary">Pattern Inspector</span>
-              <span class="text-xs text-muted font-bold uppercase tracking-wider">Active Regular Expression</span>
+              <span class="inspector-panel-label">Active Regular Expression</span>
             </div>
             <button type="button" class="btn btn-ghost btn-sm btn-copy-pattern" id="btn-copy-pattern" title="Copy pattern to clipboard">
               <svg class="icon icon-xs" aria-hidden="true"><use href="#icon-clipboard"></use></svg>
@@ -164,12 +164,12 @@ require_once APP_ROOT . '/includes/layout_header.php';
           </div>
 
           <div class="mb-3">
-            <span class="text-xs text-muted block uppercase font-bold mb-1">Validation Constraint Message:</span>
-            <p id="tester-message" class="text-sm mb-0 text-muted">4–20 characters; start with a letter; letters, numbers and underscore only.</p>
+            <span class="inspector-field-label">Validation Constraint Message:</span>
+            <p id="tester-message" class="inspector-field-value text-sm mb-0">4–20 characters; start with a letter; letters, numbers and underscore only.</p>
           </div>
 
           <div class="result-inspection-box mt-2 border-t pt-3 flex items-center justify-between">
-            <span class="text-xs text-muted uppercase font-bold">Live Client Evaluation:</span>
+            <span class="inspector-field-label">Live Client Evaluation:</span>
             <div id="tester-result" class="badge badge-ok text-sm py-1 px-3">
               <span class="status-icon">✓</span> Valid
             </div>

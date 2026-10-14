@@ -1027,4 +1027,29 @@ dialog::backdrop {
 .max-w-3xl { max-width: 48rem !important; }
 .max-w-4xl { max-width: 56rem !important; }
 
+/* ── Font Weight Utilities ────────────────────────────────────────────────── */
+.font-bold    { font-weight: 700 !important; }
+.font-semibold{ font-weight: 600 !important; }
+.font-medium  { font-weight: 500 !important; }
+.font-normal  { font-weight: 400 !important; }
 
+/* ── Text Transform & Spacing Utilities ───────────────────────────────────── */
+.uppercase      { text-transform: uppercase !important; }
+.capitalize     { text-transform: capitalize !important; }
+.tracking-wider { letter-spacing: 0.06em !important; }
+.tracking-wide  { letter-spacing: 0.04em !important; }
+
+/* ── Additional Spacing Helpers ───────────────────────────────────────────── */
+.p-4   { padding: var(--space-4) !important; }
+.p-5   { padding: var(--space-5) !important; }
+.p-6   { padding: var(--space-6) !important; }
+.pt-3  { padding-top: var(--space-3) !important; }
+.pt-4  { padding-top: var(--space-4) !important; }
+.rounded { border-radius: var(--radius-sm) !important; }
+.border  { border: 1px solid var(--border) !important; }
+.gap-5 { gap: var(--space-5); }
+.gap-8 { gap: var(--space-8); }
+.mt-6  { margin-top: var(--space-6); }
+.mt-3  { margin-top: var(--space-3); }
+.mb-8  { margin-bottom: var(--space-8); }
+.block { display: block !important; }
