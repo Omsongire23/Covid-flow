@@ -304,7 +304,36 @@ For current pass/fail counts, treat `docs/TEST_REPORT.md` as the source of truth
 
 ---
 
-## 12. Data attribution and disclaimer
+## 12. Vercel Deployment
+
+By default, Vercel is optimized for Node.js and static files, which causes raw `.php` files to download rather than execute. CovidFlow includes a complete Vercel Serverless Function setup powered by the `vercel-php` community runtime (`vercel-php@0.7.4` matching PHP 8.3).
+
+### Architecture & Routing
+- **Serverless Entrypoint:** [`api/index.php`](api/index.php) acts as the front-controller router for all dynamic PHP requests (`public/index.php`, `public/statistics.php`, `public/quality-lab.php`, `public/api/*`, `public/admin/*`).
+- **Static Assets:** [`vercel.json`](vercel.json) routes `/assets/(.*)` directly to `/public/assets/$1` via Vercel's global CDN edge network.
+- **Clean URLs:** Routes like `/statistics` and `/quality-lab` resolve automatically alongside direct script extensions (`.php`).
+- **Filesystem & Session Protection:** Serverless environments are read-only; PHP logs and sessions automatically fallback to `/tmp` and system logs.
+
+### Environment Variables
+Configure these in **Vercel Project Settings &rarr; Environment Variables**:
+
+| Variable | Description | Example / Default |
+|---|---|---|
+| `DATABASE_URL` | *(Recommended)* Full MySQL connection URL | `mysql://user:pass@host:3306/covid_portal` |
+| `DB_HOST` | MySQL hostname (if not using `DATABASE_URL`) | `your-db-host.provider.com` |
+| `DB_PORT` | MySQL port | `3306` |
+| `DB_NAME` | Database name | `covid_portal` |
+| `DB_USER` | Database user | `covid_user` |
+| `DB_PASS` / `DB_PASSWORD` | Database password | `your_secure_password` |
+| `APP_ENV` | Application environment | `production` |
+| `BASE_URL` | Public production URL | `https://your-project.vercel.app` |
+| `COVID_API_BASE` | Upstream disease.sh base URL | `https://disease.sh/v3/covid-19/` |
+
+> **Note on Database:** You can use any cloud MySQL / MariaDB provider (such as TiDB Serverless, PlanetScale, Aiven, Supabase, AWS RDS, or Railway). Static information pages (Home, Statistics, Quality Lab, Symptoms, Prevention, Myths, Helplines) and Disease.sh API endpoints will load even before connecting a database.
+
+---
+
+## 13. Data attribution and disclaimer
 
 - **Statistics:** retrieved from the open [disease.sh](https://disease.sh) API.
 - **Guidance:** cited from the World Health Organization (WHO) and the Ministry of Health and Family Welfare (MoHFW), Government of India.
@@ -313,7 +342,7 @@ For current pass/fail counts, treat `docs/TEST_REPORT.md` as the source of truth
 
 ---
 
-## 13. Author
+## 14. Author
 
 **Om** — [@Omsongire23](https://github.com/Omsongire23)
 
