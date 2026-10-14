@@ -83,7 +83,7 @@ if ($method === 'POST') {
         $payload = $_POST;
     }
 
-    $action = $payload['action'] ?? '';
+    $action = (string)($payload['action'] ?? (isset($payload['body']) ? 'create' : ''));
 
     if ($action === 'create') {
         $rawBody = (string)($payload['body'] ?? '');
