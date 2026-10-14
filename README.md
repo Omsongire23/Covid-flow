@@ -147,8 +147,6 @@ cd Covid-flow
 docker compose up -d
 ```
 
-Open **http://127.0.0.1:8000**.
-
 | Service | Details |
 |---|---|
 | Web | `http://127.0.0.1:8000` |
