@@ -40,16 +40,16 @@ require_once APP_ROOT . '/includes/layout_header.php';
     <div class="card quality-explainer-card">
       <div class="card-header border-b">
         <div class="flex items-center gap-2">
-          <span class="badge badge-danger">PCRE 'D' Modifier</span>
+          <span class="badge badge-danger">PCRE-D Modifier</span>
           <h2 class="card-title text-base">Trailing Newline Defense</h2>
         </div>
       </div>
       <div class="card-body explainer-body">
         <p class="mb-2">
-          By default in PHP (PCRE), the <code class="inline-code">$</code> anchor matches <em>before</em> a trailing newline (<code class="inline-code">\n</code>), allowing malicious payloads like <code class="inline-code">"user\n"</code> to slip past standard validation.
+          By default in PHP (PCRE), the anchor matches <em>before</em> a trailing newline, allowing malicious payloads like <code class="inline-code">user</code> to slip past standard validation.
         </p>
         <p class="mb-0">
-          Enforcing delimiter modifier <code class="inline-code">~...~Du</code> ensures absolute end-of-string alignment, guaranteeing strict 100% equivalence with browser JavaScript.
+          Enforcing delimiter modifier ensures absolute end-of-string alignment, guaranteeing strict 100% equivalence with browser JavaScript.
         </p>
       </div>
     </div>
@@ -64,10 +64,10 @@ require_once APP_ROOT . '/includes/layout_header.php';
       </div>
       <div class="card-body explainer-body">
         <p class="mb-2">
-          Hostile nested patterns without length caps can induce quadratic backtracking (catastrophic ReDoS), taking &gt;7.5 seconds on 100k malicious characters.
+          Hostile nested patterns without length caps can induce quadratic backtracking (catastrophic ReDoS), taking 7.5 seconds on 100k malicious characters.
         </p>
         <p class="mb-0">
-          Our patterns check bounded length <code class="inline-code">(?=[\s\S]{3,500}$)</code> <em>first</em> before any tag inspection, executing across hostile 100,000-character inputs in <strong>under 2 ms</strong>.
+          Our patterns check bounded length before any tag inspection, executing across hostile 100,000-character inputs in <strong>under 2 ms</strong>.
         </p>
       </div>
     </div>
@@ -91,12 +91,12 @@ require_once APP_ROOT . '/includes/layout_header.php';
     </div>
   </div>
 
-  <!-- Part 1: Interactive Live Pattern Explorer -->
+  <!-- Part 1: Pattern Explorer -->
   <section class="card mb-6" id="lab-tester" aria-labelledby="live-tester-heading">
     <div class="card-header border-b">
-      <h2 id="live-tester-heading" class="card-title text-xl">1. Live Interactive Pattern Explorer</h2>
+      <h2 id="live-tester-heading" class="card-title text-xl">1. Pattern Explorer</h2>
       <p class="card-desc text-sm">
-        Select any field from the single source-of-truth configuration (<code>config/patterns.json</code>) and test sample inputs in real time.
+        Select any field from the single source-of-truth configuration and test sample inputs in real time.
       </p>
     </div>
     <div class="card-body">
@@ -202,7 +202,7 @@ require_once APP_ROOT . '/includes/layout_header.php';
       </div>
       <button type="button" class="btn btn-primary" id="btn-run-all">
         <svg class="icon icon-sm" aria-hidden="true"><use href="#icon-play"></use></svg>
-        Run All Tests In Browser
+        Run All Tests
       </button>
     </div>
 
@@ -262,7 +262,7 @@ require_once APP_ROOT . '/includes/layout_header.php';
           <tbody id="runner-tbody">
             <tr>
               <td colspan="7" class="text-center py-6 text-muted">
-                Click <strong>&ldquo;Run All Tests In Browser&rdquo;</strong> to execute the full regex validation suite.
+                Click <strong>&ldquo;Run All Tests&rdquo;</strong> to execute the full regex validation suite.
               </td>
             </tr>
           </tbody>
@@ -275,8 +275,8 @@ require_once APP_ROOT . '/includes/layout_header.php';
   <div class="alert alert-info" role="note">
     <svg class="icon icon-md text-info" aria-hidden="true"><use href="#icon-shield-check"></use></svg>
     <div>
-      <strong>Dual-Engine Assurance:</strong> The interactive table above tests the browser&apos;s JavaScript engine (<code>RegExp('...', 'u')</code>).
-      Server-side PCRE tests are executed identically via <code>tests/regex_test.php</code>, and cross-engine parity is enforced by <code>tests/engine-parity.mjs</code>. Full documented outputs are cataloged in <code>docs/TEST_REPORT.md</code>.
+      <strong>Dual-Engine Assurance:</strong> The interactive table above tests the browser&apos;s JavaScript engine.
+      Server-side PCRE tests are executed identically via <code>tests/regex_test.php</code>, and cross-engine parity is enforced with Full documented outputs are cataloged in <code>TEST_REPORT</code>.
     </div>
   </div>
 </div>
