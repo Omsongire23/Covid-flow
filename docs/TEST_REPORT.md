@@ -180,3 +180,16 @@ HTTP Smoke Test Summary: Total: 14 | Passed: 14 | Failed: 0
 ## 5. Conclusion
 
 The COVID-19 Portal has met all acceptance criteria, functional requirements, architectural standards, and quality specifications outlined in `CLAUDE.md`. The regular expression test suite achieves 100% agreement between client and server engines, and all security measures (SQL injection prevention, XSS escaping, CSRF enforcement, and brute-force throttling) have been verified under live conditions on `http://127.0.0.1:8000`.
+
+
+## 6. Selenium Browser Automation — Pending Execution
+
+A Selenium 4 / Python browser regression suite has been added at `tests/selenium/test_covid_flow.py`, with setup instructions in `docs/SELENIUM_TESTING.md`.
+
+**Execution status: NOT RUN / NOT VERIFIED in this report revision.** The existing 540 test-action summary above reflects the previously documented suites and must not be interpreted as including Selenium. Run the Selenium suite locally, capture its actual terminal output and screenshots, then append the observed pass/fail/skip counts here. Do not change the historical 540 count until the Selenium results are independently verified.
+
+The implementation-specific test expectations are:
+- Guest access to `community.php` displays a login prompt; it does not redirect.
+- `program-registration.php` requires authentication.
+- The comment textarea enforces a 500-character browser limit.
+- Authenticated tests require a dedicated test account supplied through environment variables.
