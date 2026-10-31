@@ -16,3 +16,6 @@ Thumbs.db
 
 # Temporary test artifacts
 /tmp/
+
+# Selenium browser screenshots and run artifacts
+artifacts/selenium/
