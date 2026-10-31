@@ -1,0 +1,1 @@
+{"content":"Official Flask 3.1 docs support an application factory and recommend keeping configuration outside source control; signed cookie sessions require a random secret key, cookie flags, CSRF tokens, trusted hosts, and reviewed headers.","source":"web","provider":"websearch","confidence":"MEDIUM","fetched_at":"2026-10-31T17:22:24.535Z","ttl":86400000,"kind":"docs"}

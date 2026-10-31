@@ -1,0 +1,1 @@
+{"content":"Selenium 4 official docs provide WebDriverWait and advise explicit waits; Selenium Manager ships with Selenium 4.6+ but browser or driver downloads can be blocked by offline or proxy environments.","source":"web","provider":"websearch","confidence":"MEDIUM","fetched_at":"2026-10-31T17:22:25.070Z","ttl":86400000,"kind":"docs"}

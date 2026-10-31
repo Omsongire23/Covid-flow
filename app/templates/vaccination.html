@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Vaccination Information{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="page-title-block">
+    <div class="badge badge-success mb-2">Immunization Facts</div>
+    <h1 class="page-title" id="vaccinePageHeading">COVID-19 Vaccination Intelligence &amp; Efficacy</h1>
+    <p class="page-lead">Rigorous clinical trial evidence, dose guidelines, and safety profiles from the World Health Organization.</p>
+  </div>
+
+  <div class="grid grid-2 mb-8">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title text-xl mb-3">Why Get Vaccinated?</h2>
+        <p class="text-muted mb-4">COVID-19 vaccines train your immune system to identify SARS-CoV-2 spike proteins without causing the disease itself. Real-world surveillance demonstrates over 90% reduction in hospitalization and death among fully vaccinated and boosted individuals.</p>
+        <ul class="symptom-list mb-4">
+          <li><strong>Protection:</strong> Lowers the severity of infection significantly.</li>
+          <li><strong>Variant Defense:</strong> Boosters broaden neutralising antibody titers against emerging variants.</li>
+          <li><strong>Community Immunity:</strong> Lowers transmission vulnerability in elderly and immunocompromised individuals.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title text-xl mb-3">Safety &amp; Monitoring</h2>
+        <p class="text-muted mb-4">Billions of vaccine doses have been administered globally under the most intensive safety surveillance monitoring history.</p>
+        <div class="alert alert-info">
+          <strong>Common Mild Side Effects:</strong> Tenderness at injection site, low-grade fever, fatigue, or muscle soreness resolving in 24–48 hours.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-8">
+    <div class="card-header">
+      <h2 class="card-title">Registration for Vaccination Awareness Programme</h2>
+    </div>
+    <div class="card-body">
+      <p class="text-muted mb-4">Join our community public health awareness sessions or register for vaccine notification alerts.</p>
+      <a href="{{ url_for('public.programme') }}" class="btn btn-primary" id="registerProgrammeBtn">Register for Programme &rarr;</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

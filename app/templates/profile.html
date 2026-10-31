@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="page-title-block">
+    <div class="badge badge-primary mb-2">Account Dashboard</div>
+    <h1 class="page-title" id="profileHeading">Welcome, {{ user.username }}</h1>
+    <p class="page-lead">Manage your Covid-flow profile, view your community contributions, and inspect your programme registrations.</p>
+  </div>
+
+  <div class="grid grid-3 mb-8">
+    <!-- User Profile Overview Card -->
+    <div class="card" style="grid-column: span 1;">
+      <div class="card-header">
+        <h2 class="card-title text-lg">Account Summary</h2>
+      </div>
+      <div class="card-body">
+        <div class="profile-avatar-large mb-4 text-center">
+          <span class="avatar-circle-lg">{{ user.username[0] | upper }}</span>
+          <h3 class="font-bold text-lg mt-2" id="profileUsername">{{ user.username }}</h3>
+          <span class="badge badge-primary">{{ user.role | upper }}</span>
+        </div>
+
+        <div class="profile-detail-list">
+          <div class="profile-detail-item">
+            <span class="text-xs text-muted">Email Address:</span>
+            <div class="font-mono text-sm" id="profileEmail">{{ user.email }}</div>
+          </div>
+          <div class="profile-detail-item mt-3">
+            <span class="text-xs text-muted">Account Created:</span>
+            <div class="text-sm">{{ user.created_at }}</div>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t">
+          <a href="{{ url_for('auth.logout') }}" class="btn btn-outline btn-sm btn-block text-danger">Sign Out</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: Change Password & User Activity -->
+    <div style="grid-column: span 2;">
+      <!-- Change Password Card -->
+      <div class="card mb-6">
+        <div class="card-header">
+          <h2 class="card-title text-lg">Change Security Password</h2>
+        </div>
+        <div class="card-body">
+          <form action="{{ url_for('auth.profile') }}" method="POST" id="changePasswordForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="form-group mb-4">
+              <label for="currentPasswordInput" class="form-label font-bold">Current Password</label>
+              <input type="password" name="current_password" id="currentPasswordInput" class="form-control {% if errors.get('current_password') %}is-invalid{% endif %}" required>
+              {% if errors.get('current_password') %}
+                <div class="field-error">{{ errors.current_password }}</div>
+              {% endif %}
+            </div>
+
+            <div class="grid grid-2 mb-4">
+              <div class="form-group">
+                <label for="newPasswordInput" class="form-label font-bold">New Password</label>
+                <input type="password" name="new_password" id="newPasswordInput" class="form-control {% if errors.get('new_password') %}is-invalid{% endif %}" required>
+                {% if errors.get('new_password') %}
+                  <div class="field-error">{{ errors.new_password }}</div>
+                {% endif %}
+              </div>
+              <div class="form-group">
+                <label for="confirmNewPasswordInput" class="form-label font-bold">Confirm New Password</label>
+                <input type="password" name="confirm_new_password" id="confirmNewPasswordInput" class="form-control {% if errors.get('confirm_new_password') %}is-invalid{% endif %}" required>
+                {% if errors.get('confirm_new_password') %}
+                  <div class="field-error">{{ errors.confirm_new_password }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="updatePasswordBtn">Update Password</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- User Programme Registrations -->
+      <div class="card mb-6">
+        <div class="card-header flex-between">
+          <h2 class="card-title text-lg">Your Programme Registrations</h2>
+          <span class="badge badge-outline">{{ registrations | length }} Recorded</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ref #</th>
+                  <th>Participant</th>
+                  <th>Service</th>
+                  <th>State</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if registrations %}
+                  {% for r in registrations %}
+                  <tr>
+                    <td class="font-mono text-primary font-bold">{{ r.ref_number }}</td>
+                    <td>{{ r.full_name }}</td>
+                    <td>{{ r.service | replace('_', ' ') | title }}</td>
+                    <td>{{ r.state }}</td>
+                    <td class="text-xs text-muted">{{ r.created_at }}</td>
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">
+                      No programme registrations yet. <a href="{{ url_for('public.programme') }}">Register now &rarr;</a>
+                    </td>
+                  </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Recent Comments -->
+      <div class="card">
+        <div class="card-header flex-between">
+          <h2 class="card-title text-lg">Your Community Comments</h2>
+          <span class="badge badge-outline">{{ comments | length }} Notes</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="comments-list">
+            {% if comments %}
+              {% for c in comments %}
+              <div class="comment-item">
+                <div class="text-xs text-muted mb-1">{{ c.created_at }}</div>
+                <p class="comment-text">{{ c.body }}</p>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div class="text-center py-4 text-muted">
+                You haven't posted any comments yet. <a href="{{ url_for('public.community') }}">Visit Community Board &rarr;</a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

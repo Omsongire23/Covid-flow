@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Create an Account{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="auth-card-wrapper max-w-md mx-auto">
+    <div class="card" id="registerCard">
+      <div class="card-header text-center">
+        <div class="auth-icon mb-2">&#x1F464;</div>
+        <h1 class="card-title text-2xl" id="registerHeading">Create Covid-flow Account</h1>
+        <p class="card-subtitle">Join the community discussion and register for public health programmes</p>
+      </div>
+
+      <div class="card-body">
+        <form action="{{ url_for('auth.register') }}" method="POST" id="registerForm" novalidate>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <!-- Username -->
+          <div class="form-group mb-4">
+            <label for="registerUsernameInput" class="form-label font-bold">Username <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              name="username"
+              id="registerUsernameInput"
+              class="form-control {% if errors.get('username') %}is-invalid{% endif %}"
+              placeholder="e.g. OmSongire23"
+              value="{{ form_data.username }}"
+              autocomplete="username"
+              required
+            >
+            <small class="text-muted">4–20 characters, starting with a letter.</small>
+            {% if errors.get('username') %}
+              <div class="field-error" id="usernameError">{{ errors.username }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Email -->
+          <div class="form-group mb-4">
+            <label for="registerEmailInput" class="form-label font-bold">Email Address <span class="text-danger">*</span></label>
+            <input
+              type="email"
+              name="email"
+              id="registerEmailInput"
+              class="form-control {% if errors.get('email') %}is-invalid{% endif %}"
+              placeholder="name@example.com"
+              value="{{ form_data.email }}"
+              autocomplete="email"
+              required
+            >
+            {% if errors.get('email') %}
+              <div class="field-error" id="emailError">{{ errors.email }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Password -->
+          <div class="form-group mb-4">
+            <label for="registerPasswordInput" class="form-label font-bold">Password <span class="text-danger">*</span></label>
+            <input
+              type="password"
+              name="password"
+              id="registerPasswordInput"
+              class="form-control {% if errors.get('password') %}is-invalid{% endif %}"
+              placeholder="Choose a strong password"
+              autocomplete="new-password"
+              required
+            >
+            <div class="password-requirements text-xs text-muted mt-1">
+              8–64 characters; requires 1 uppercase, 1 lowercase, 1 digit, and 1 special symbol; no spaces.
+            </div>
+            {% if errors.get('password') %}
+              <div class="field-error" id="passwordError">{{ errors.password }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group mb-6">
+            <label for="registerConfirmPasswordInput" class="form-label font-bold">Confirm Password <span class="text-danger">*</span></label>
+            <input
+              type="password"
+              name="confirm_password"
+              id="registerConfirmPasswordInput"
+              class="form-control {% if errors.get('confirm_password') %}is-invalid{% endif %}"
+              placeholder="Re-enter your password"
+              autocomplete="new-password"
+              required
+            >
+            {% if errors.get('confirm_password') %}
+              <div class="field-error" id="confirmPasswordError">{{ errors.confirm_password }}</div>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="registerSubmitBtn">Register Account</button>
+        </form>
+      </div>
+
+      <div class="card-footer text-center">
+        <p class="text-sm text-muted">
+          Already have an account?
+          <a href="{{ url_for('auth.login') }}" class="font-bold text-primary" id="toLoginLink">Sign In Here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

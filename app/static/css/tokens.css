@@ -1,0 +1,155 @@
+/* tokens.css — Design tokens (custom properties) for both themes */
+/* Typography: Figtree (headings) + Noto Sans (body) — ui-ux-pro-max healthcare profile */
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&family=Noto+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+
+:root {
+  /* ── Colours — Light theme ──────────────────────────────── */
+  --bg:            #f0f5fa;
+  --surface:       #ffffff;
+  --surface-header:rgba(255, 255, 255, 0.92);
+  --surface-2:     #edf2f8;
+  --surface-3:     #dde7f0;
+  --border:        #d1dde8;
+  --border-subtle: #e4ecf4;
+  --text:          #0a1628;
+  --text-muted:    #4f6278;
+  --text-subtle:   #8fa3b8;
+
+  /* Clinical blue primary palette */
+  --primary:       #0284c7;
+  --primary-strong:#025f94;
+  --primary-contrast:#ffffff;
+  --primary-soft:  rgba(2, 132, 199, 0.10);
+  --primary-glow:  rgba(2, 132, 199, 0.25);
+
+  /* Teal accent */
+  --accent:        #0891b2;
+  --accent-strong: #0e7490;
+  --accent-soft:   rgba(8, 145, 178, 0.12);
+
+  --ok:            #16a34a;
+  --ok-strong:     #15803d;
+  --ok-soft:       rgba(22, 163, 74, 0.12);
+
+  --warn:          #d97706;
+  --warn-strong:   #b45309;
+  --warn-soft:     rgba(217, 119, 6, 0.12);
+
+  --danger:        #dc2626;
+  --danger-strong: #b91c1c;
+  --danger-soft:   rgba(220, 38, 38, 0.10);
+
+  --info:          #6366f1;
+  --info-soft:     rgba(99, 102, 241, 0.10);
+
+  /* ── Glassmorphism ──────────────────────────────────────── */
+  --glass-bg:      rgba(255, 255, 255, 0.70);
+  --glass-border:  rgba(255, 255, 255, 0.50);
+  --glass-blur:    16px;
+
+  /* ── Shadows ────────────────────────────────────────────── */
+  --shadow-xs:     0 1px 2px rgba(10, 22, 40, 0.04);
+  --shadow-sm:     0 1px 3px rgba(10, 22, 40, 0.07), 0 1px 2px rgba(10, 22, 40, 0.04);
+  --shadow:        0 2px 8px rgba(10, 22, 40, 0.08), 0 6px 20px rgba(10, 22, 40, 0.04);
+  --shadow-md:     0 4px 12px rgba(10, 22, 40, 0.10), 0 12px 32px rgba(10, 22, 40, 0.06);
+  --shadow-lg:     0 12px 28px rgba(10, 22, 40, 0.12), 0 24px 56px rgba(10, 22, 40, 0.08);
+  --shadow-primary:0 4px 16px rgba(2, 132, 199, 0.35);
+
+  /* ── Radius ─────────────────────────────────────────────── */
+  --radius-xl:     22px;
+  --radius:        14px;
+  --radius-sm:     9px;
+  --radius-xs:     5px;
+  --radius-full:   9999px;
+
+  /* ── Typography ─────────────────────────────────────────── */
+  --font-heading: 'Figtree', 'Inter', system-ui, -apple-system, sans-serif;
+  --font:         'Noto Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --mono:         ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-size-xs:   0.75rem;    /* 12px */
+  --font-size-sm:   0.875rem;   /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg:   1.125rem;   /* 18px */
+  --font-size-xl:   1.25rem;    /* 20px */
+  --font-size-2xl:  1.5rem;     /* 24px */
+  --font-size-3xl:  1.875rem;   /* 30px */
+  --font-size-4xl:  2.25rem;    /* 36px */
+  --font-size-5xl:  3rem;       /* 48px */
+
+  /* ── Spacing (8pt scale) ────────────────────────────────── */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* ── Layout ─────────────────────────────────────────────── */
+  --max-width: 1260px;
+  --nav-height: 70px;
+
+  /* ── Transitions ─────────────────────────────────────────── */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition:      220ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 380ms cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:     400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+:root[data-theme="dark"] {
+  /* ── Colours — Premium deep dark theme ─────────────────── */
+  --bg:            #070d1a;
+  --surface:       #0e1826;
+  --surface-header:rgba(10, 18, 32, 0.90);
+  --surface-2:     #142030;
+  --surface-3:     #1c2d42;
+  --border:        #1f3050;
+  --border-subtle: #172640;
+  --text:          #e8f0fa;
+  --text-muted:    #8fa8c8;
+  --text-subtle:   #506888;
+
+  /* Bright clinical blue for dark mode */
+  --primary:       #38bdf8;
+  --primary-strong:#7dd3fc;
+  --primary-contrast:#032940;
+  --primary-soft:  rgba(56, 189, 248, 0.14);
+  --primary-glow:  rgba(56, 189, 248, 0.30);
+
+  --accent:        #22d3ee;
+  --accent-strong: #67e8f9;
+  --accent-soft:   rgba(34, 211, 238, 0.14);
+
+  --ok:            #34d399;
+  --ok-strong:     #6ee7b7;
+  --ok-soft:       rgba(52, 211, 153, 0.14);
+
+  --warn:          #fbbf24;
+  --warn-strong:   #fcd34d;
+  --warn-soft:     rgba(251, 191, 36, 0.14);
+
+  --danger:        #f87171;
+  --danger-strong: #fca5a5;
+  --danger-soft:   rgba(248, 113, 113, 0.14);
+
+  --info:          #818cf8;
+  --info-soft:     rgba(129, 140, 248, 0.14);
+
+  /* ── Glassmorphism (dark) ──────────────────────────────── */
+  --glass-bg:      rgba(14, 24, 38, 0.75);
+  --glass-border:  rgba(255, 255, 255, 0.08);
+  --glass-blur:    18px;
+
+  /* ── Dark shadows ─────────────────────────────────────── */
+  --shadow-xs:     0 1px 2px rgba(0, 0, 0, 0.50);
+  --shadow-sm:     0 1px 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.30);
+  --shadow:        0 2px 8px rgba(0, 0, 0, 0.50), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-md:     0 4px 16px rgba(0, 0, 0, 0.55), 0 16px 40px rgba(0, 0, 0, 0.40);
+  --shadow-lg:     0 12px 32px rgba(0, 0, 0, 0.65), 0 24px 64px rgba(0, 0, 0, 0.50);
+  --shadow-primary:0 4px 20px rgba(56, 189, 248, 0.40);
+}
+

@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics &amp; Historical Trends{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="page-title-block">
+    <h1 class="page-title" id="statsPageHeading">COVID-19 Global Statistics &amp; Analytics</h1>
+    <p class="page-lead">Interactive trend visualizations, country-by-country metrics, and real-time epidemic intelligence.</p>
+  </div>
+
+  <!-- Historical Trend Visualization Section -->
+  <div class="card chart-card mb-8">
+    <div class="card-header chart-card-header">
+      <div>
+        <h2 class="card-title" id="trendsChartTitle">30-Day Epidemiological Trajectory</h2>
+        <p class="card-subtitle">Daily global trajectory from verified reporting sources</p>
+      </div>
+      <div class="chart-controls">
+        <button type="button" class="btn btn-sm btn-outline active" id="btnChartMetricCases">Confirmed Cases</button>
+        <button type="button" class="btn btn-sm btn-outline" id="btnChartMetricDeaths">Fatalities</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="chart-container" style="position: relative; height: 350px; width: 100%;">
+        <canvas id="covidTrendChart" aria-label="Line chart showing COVID-19 cases and deaths over past 30 days" role="img"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Country Search and Table Section -->
+  <div class="card mb-8">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">Country-Wise Surveillance Data</h2>
+        <p class="card-subtitle">Live country reporting sorted by total confirmed cases</p>
+      </div>
+      <!-- Search Form -->
+      <form action="{{ url_for('public.statistics') }}" method="GET" class="search-form" id="countrySearchForm">
+        <div class="input-group">
+          <input
+            type="search"
+            name="q"
+            id="countrySearchInput"
+            class="form-control"
+            placeholder="Search country (e.g. India, France)..."
+            value="{{ query }}"
+            aria-label="Search country"
+          >
+          <button type="submit" class="btn btn-primary" id="countrySearchBtn">Search</button>
+          {% if query %}
+            <a href="{{ url_for('public.statistics') }}" class="btn btn-ghost" id="clearSearchBtn">Clear</a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="data-table" id="countriesStatsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Country</th>
+              <th class="text-right">Total Cases</th>
+              <th class="text-right">Today Cases</th>
+              <th class="text-right">Active Cases</th>
+              <th class="text-right">Total Deaths</th>
+              <th class="text-right">Recovered</th>
+            </tr>
+          </thead>
+          <tbody id="countryTableBody">
+            {% if countries %}
+              {% for c in countries %}
+              <tr class="country-row" data-country="{{ c.country.lower() }}">
+                <td class="text-muted font-mono">{{ loop.index }}</td>
+                <td>
+                  <div class="country-name-cell">
+                    <strong>{{ c.country }}</strong>
+                  </div>
+                </td>
+                <td class="text-right font-mono">{{ format_number(c.cases) }}</td>
+                <td class="text-right font-mono text-danger">
+                  {% if c.todayCases > 0 %}+{{ format_number(c.todayCases) }}{% else %}-{% endif %}
+                </td>
+                <td class="text-right font-mono text-warn">{{ format_number(c.active) }}</td>
+                <td class="text-right font-mono text-danger">{{ format_number(c.deaths) }}</td>
+                <td class="text-right font-mono text-success">
+                  {% if c.recovered and c.recovered > 0 %}{{ format_number(c.recovered) }}{% else %}N/A{% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="7" class="text-center py-8 text-muted" id="noCountriesFound">
+                  No matching country records found for "<strong>{{ query }}</strong>".
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Initialize Chart.js with historical data
+  document.addEventListener('DOMContentLoaded', function() {
+    const dates = {{ historical.dates | tojson }};
+    const casesData = {{ historical.cases | tojson }};
+    const deathsData = {{ historical.deaths | tojson }};
+
+    const ctx = document.getElementById('covidTrendChart');
+    if (!ctx) return;
+
+    let currentMetric = 'cases';
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{
+          label: 'Total Confirmed Cases',
+          data: casesData,
+          borderColor: '#0284c7',
+          backgroundColor: 'rgba(2, 132, 199, 0.1)',
+          fill: true,
+          tension: 0.25,
+          pointRadius: 2,
+          pointHoverRadius: 6,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              label: function(context) {
+                return `${context.dataset.label}: ${Number(context.raw).toLocaleString()}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { maxTicksLimit: 10 }
+          },
+          y: {
+            ticks: {
+              callback: function(val) {
+                return Number(val) >= 1000000 ? (val / 1000000).toFixed(1) + 'M' : val;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    const btnCases = document.getElementById('btnChartMetricCases');
+    const btnDeaths = document.getElementById('btnChartMetricDeaths');
+
+    if (btnCases && btnDeaths) {
+      btnCases.addEventListener('click', function() {
+        btnCases.classList.add('active');
+        btnDeaths.classList.remove('active');
+        chart.data.datasets[0].label = 'Total Confirmed Cases';
+        chart.data.datasets[0].data = casesData;
+        chart.data.datasets[0].borderColor = '#0284c7';
+        chart.data.datasets[0].backgroundColor = 'rgba(2, 132, 199, 0.1)';
+        chart.update();
+      });
+
+      btnDeaths.addEventListener('click', function() {
+        btnDeaths.classList.add('active');
+        btnCases.classList.remove('active');
+        chart.data.datasets[0].label = 'Total Fatalities';
+        chart.data.datasets[0].data = deathsData;
+        chart.data.datasets[0].borderColor = '#ef4444';
+        chart.data.datasets[0].backgroundColor = 'rgba(239, 68, 68, 0.1)';
+        chart.update();
+      });
+    }
+
+    // Client-side quick filter for table
+    const searchInput = document.getElementById('countrySearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const q = searchInput.value.toLowerCase().trim();
+        const rows = document.querySelectorAll('.country-row');
+        rows.forEach(row => {
+          const country = row.getAttribute('data-country');
+          if (!q || country.includes(q)) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+    }
+  });
+</script>
+{% endblock %}

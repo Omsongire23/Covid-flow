@@ -1,18 +1,63 @@
-# Environment and local credentials
-config/config.local.php
+# ==============================================================================
+# Covid-flow STQA Project — Git Ignore
+# ==============================================================================
+
+# Markdown Documentation Rule
+# Only README.md is permitted in the root; all project documentation lives in docs/
+/*.md
+!/README.md
+
+# Python Bytecode & Runtime Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+.env/
+
+# Environment Variables & Secrets
 .env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+!.env.example
 
-# Storage and logs
-storage/logs/*.log
-storage/sessions/*
+# Database Instances & Local Storage
+instance/*.sqlite3
+instance/*.db
+instance/*.sqlite
+*.sqlite3
+*.db
+*.sqlite
 
-# System and editor files
-.DS_Store
-Thumbs.db
-.idea/
+# Testing, Quality & Coverage Artifacts
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Generated Test Reports & Automation Artifacts
+reports/*.html
+reports/assets/
+reports/screenshots/*.png
+!reports/screenshots/.gitkeep
+
+# IDEs & System Artifacts
 .vscode/
+.idea/
 *.swp
 *.swo
-
-# Temporary test artifacts
-/tmp/
+*~
+.DS_Store
+Thumbs.db

@@ -1,349 +1,304 @@
-<div align="center">
+<div align="center">COVID-FLOW — COVID-19 Health Intelligence & Testing Portal
+Software Testing and Quality Assurance (STQA) Mini Project
+A responsive COVID-19 health information and surveillance portal built with Python 3.13, Flask, SQLite, HTML5, CSS3 and JavaScript. The project demonstrates practical STQA techniques including centralized input validation, Equivalence Partitioning (EP), Boundary Value Analysis (BVA), unit and integration testing, and Selenium 4 browser automation using the Page Object Model (POM).
 
-# Covid-flow
 
-### Dynamic COVID-19 Information Portal - Software Testing & Quality Assurance
 
-A responsive, accessible COVID-19 information website built with **HTML, CSS, JavaScript, PHP and MySQL**,
-backed by a documented **regular-expression test suite** that runs identically in the browser, in Node.js and in PHP.
 
-![PHP](https://img.shields.io/badge/PHP-8.1%2B-777BB4?logo=php&logoColor=white)
-![MariaDB](https://img.shields.io/badge/MySQL%20%2F%20MariaDB-InnoDB-003545?logo=mariadb&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES%20Modules-F7DF1E?logo=javascript&logoColor=black)
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 
-</div>
+</div>Table of contents
+1. Project overview
+2. Key features
+3. Technology stack
+4. Application architecture
+5. Project structure
+6. Quick start
+7. Validation and STQA techniques
+8. Running the automated tests
+9. Selenium browser automation
+10. QA documentation and reports
+11. Security and reliability
+12. Known limitations
+13. License and disclaimer
+14. Author
+1. Project overview
+COVID-FLOW is a public health surveillance and information portal developed as a Software Testing and Quality Assurance mini project. It combines a user-facing COVID-19 information website with a structured testing environment used to demonstrate software quality practices.
 
----
+The project has two connected deliverables:
+Deliverable	Description
+COVID-19 information portal	Dashboard, global statistics, health guidance, symptoms assessment, vaccination information, community discussion, user accounts and programme registration.
+STQA testing framework	Centralized validation, equivalence classes, boundary-value test cases, unit and integration tests, Selenium browser automation, test reports and examination-oriented documentation.
 
-## Table of contents
 
-1. [Overview](#1-overview)
-2. [Features](#2-features)
-3. [Tech stack](#3-tech-stack)
-4. [Architecture](#4-architecture)
-5. [Project structure](#5-project-structure)
-6. [Getting started](#6-getting-started)
-7. [Regular-expression validation](#7-regular-expression-validation)
-8. [Testing](#8-testing)
-9. [QA documentation](#9-qa-documentation)
-10. [Security](#10-security)
-11. [Known limitations](#11-known-limitations)
-12. [Data attribution and disclaimer](#12-data-attribution-and-disclaimer)
-13. [Author](#13-author)
+The application can retrieve COVID-19 statistics from disease.sh and use a verified offline fallback when live data is unavailable. The interface should clearly communicate the source and synchronization status of displayed data.
+2. Key features
+1. Live dashboard and global surveillance — displays global confirmed cases, active cases, recoveries and deaths using disease.sh data or a verified offline fallback.
+2. Interactive statistics and trajectories — provides a 30-day epidemiological trend chart using Chart.js and a searchable country-wise metrics table.
+3. Public health guidance — includes prevention protocols, a symptoms assessment page with emergency warning indicators, vaccination facts, myth-versus-fact information, and a national/regional helpline directory.
+4. User authentication and profile — supports account registration, secure password hashing with werkzeug.security, session handling, login throttling and a profile showing the user's comment history and registrations.
+5. Community discussion — provides authenticated comment submission, a 500-character counter, XSS-injection protection and author-only comment deletion.
+6. Programme registration — supports public-health awareness webinar and vaccination-alert registration, multi-field validation, duplicate prevention and unique reference numbers in the COV-2026-XXXXX format.
+7. Interactive STQA Quality Lab — provides live regex testing across nine validation categories, boundary-value examples, an automated 124-case validation suite runner and CSV/JSON export.
+8. Browser-based test automation — uses Selenium 4, Google Chrome and the Page Object Model to exercise real application pages and user workflows.
+9. Automated test reporting — uses pytest and pytest-html to produce a standalone HTML test report.
+3. Technology stack
+Layer	Technology
+Language	Python 3.13
+Backend	Flask 3.1, application factory pattern and Blueprints
+Database	SQLite 3
+Database access	Parameterized SQL queries, transactions and foreign-key constraints
+Frontend	HTML5, modern CSS3, Vanilla JavaScript (ES6+) and Jinja2
+Data visualization	Chart.js, vendored locally
+External data	disease.sh API with offline fallback
+Browser automation	Selenium 4.52 and Google Chrome (headless mode supported)
+Test framework	pytest
+HTML reporting	pytest-html
+Development environment	Python virtual environment (venv)
 
----
 
-## 1. Overview
-
-> **Problem statement:** *"Software Testing and Quality Assurance Mini Project: Dynamic website of COVID-19 information using HTML, CSS, JavaScript and PHP. MySQL database used to store user account, comment, and registration form details. Regular expression test cases for testing purposes."*
-
-The project delivers two things of equal weight:
-
-| | Deliverable | What it contains |
-|---|---|---|
-| **1** | **The product** | A COVID-19 information site with live statistics, guidance pages, user accounts, a community comment board and a separate programme-registration form, all stored in MySQL/MariaDB. |
-| **2** | **The quality evidence** | One shared set of validation patterns used by both JavaScript and PHP, a large table of valid/invalid test inputs, automated runners, an in-browser **Quality Lab**, and a full set of SQA documents (test plan, test cases, traceability matrix, defect log, test report). |
-
----
-
-## 2. Features
-
-Requirement IDs (`FR-xx`) are used throughout `docs/` for traceability.
-
-| ID | Feature |
-|---|---|
-| **FR-01** | **Home dashboard** — global confirmed, active, recovered and death counts, daily changes, source and last-updated time. |
-| **FR-02** | **Statistics** — historical trend chart (30D / 90D / 180D / 1Y / All) and a searchable, sortable country table. |
-| **FR-03** | **Guidance pages** — Prevention, Symptoms, Vaccination, Myths vs Facts and Helplines, with WHO / MoHFW citations. |
-| **FR-04** | **Sign up** — client- and server-side validation, hashed passwords, duplicate account rejection. |
-| **FR-05** | **Login / logout** — hardened sessions, session-ID regeneration, brute-force lockout (5 attempts / 15 minutes). |
-| **FR-06** | **Profile** — account details, own registrations (with cancel) and own comments. |
-| **FR-07** | **Community board** — paginated comments, 500-character counter, regex sanitisation, delete own comment. |
-| **FR-08** | **Programme registration** — separate enrolment form, MySQL persistence, duplicate prevention, reference numbers (`REG-XXXXXX`). |
-| **FR-09** | **Shared regex validation** — nine fields validated identically in JavaScript and PHP. |
-| **FR-10** | **Quality Lab** — live pattern tester, in-browser suite runner, CSV / JSON export and explainer cards. |
-| **FR-11** | **Professional UI** — light / dark theme, responsive grids, keyboard accessibility, WCAG AA contrast. |
-| **FR-12** | **Resilient data handling** — MySQL cache, stale-data banner on upstream failure, honest empty state (no invented numbers). |
-| **FR-13** | **Admin moderation** *(stretch)* — view, filter, hide, restore and soft-delete comments. |
-
----
-
-## 3. Tech stack
-
-| Layer | Technology |
-|---|---|
-| Front end | HTML5, CSS3 (custom properties), vanilla JavaScript (ES modules) |
-| Back end | PHP 8.1+ with PDO — no framework |
-| Database | MySQL 8 / MariaDB (InnoDB, `utf8mb4`) |
-| Charts | Chart.js (vendored, no CDN) |
-| Data source | [disease.sh](https://disease.sh) — fetched server-side and cached |
-| Containers | Docker Compose (`covid_web` + `covid_db`) |
-| Testing | Node.js scripts, PHP CLI scripts, `curl` smoke tests |
-
----
-
-## 4. Architecture
-
+4. Application architecture
+The application uses Flask's application factory and Blueprint organization to separate application setup, route groups and supporting services.
+```mermaid
+flowchart TD
+    U[User / Browser] --> UI[HTML, CSS, JavaScript, Jinja2]
+    UI --> FL[Flask Application]
+    FL --> BP[Flask Blueprints / Routes]
+    BP --> AUTH[Authentication and Validation]
+    BP --> SVC[Application Services]
+    AUTH --> DB[(SQLite Database)]
+    SVC --> DB
+    SVC --> API[disease.sh API]
+    API --> FALLBACK[Verified Offline Fallback]
+    TEST[pytest Unit and Integration Tests] --> FL
+    SEL[Selenium WebDriver Tests] --> U
+```
+Quality assurance architecture
 ```mermaid
 flowchart LR
-    B[Browser<br/>HTML · CSS · JS modules] -->|same-origin fetch| A[PHP endpoints<br/>public/api/*.php]
-    A --> D[(MySQL / MariaDB)]
-    A -->|cURL, cached| S[disease.sh]
-    P[config/patterns.json] --> A
-    P --> B
+    REQ[Requirements] --> TC[Test Cases]
+    TC --> UNIT[Unit Tests]
+    TC --> INT[Integration Tests]
+    TC --> WEB[Selenium Browser Tests]
+    UNIT --> RESULT[Test Results]
+    INT --> RESULT
+    WEB --> RESULT
+    RESULT --> REPORT[pytest-html Report]
+    RESULT --> DOCS[QA Documentation]
 ```
-
-The browser never calls a third-party API. All statistics go through `api/stats.php`, which serves cached data when the upstream is unavailable.
-
-### Key decisions
-
-| ADR | Decision | Why |
-|---|---|---|
-| **001** | Plain PHP 8.1+ with PDO, no framework | Readable for grading; prepared statements with `ATTR_EMULATE_PREPARES => false`. |
-| **002** | Server-side data fetch with MySQL cache (`covid_cache`) | Avoids CORS, leaks no visitor IPs to third parties, and survives upstream outages. |
-| **003** | Native PHP sessions + CSRF tokens + login throttling | Simple, auditable, no third-party auth. |
-| **004** | One regex source of truth (`config/patterns.json`) | JS and PHP regex engines differ in subtle ways; one file plus a parity test keeps them aligned. |
-| **005** | Docker Compose for local execution | Reproducible on any machine without dependency drift. |
-
----
-
-## 5. Project structure
-
-```
+5. Project structure
+The following is a logical overview of the important project paths referenced by the setup and test commands. Keep the actual folder and file names in your repository synchronized with this documentation.
 Covid-flow/
-├── public/                  # web root
-│   ├── index.php            # Home
-│   ├── statistics.php
-│   ├── prevention.php · symptoms.php · vaccination.php · myths.php · helplines.php
-│   ├── community.php
-│   ├── program-registration.php
-│   ├── signup.php · login.php · logout.php · profile.php
-│   ├── quality-lab.php
-│   ├── admin/comments.php
-│   ├── api/                 # stats, comments, check-username, patterns, regex-cases
-│   └── assets/              # css/, js/, img/, vendor/
-├── includes/                # bootstrap, db, auth, csrf, validate, helpers, covid client, layout
-├── config/                  # config.example.php, patterns.json
-├── data/                    # content.json (guidance pages), optional fallback snapshot
-├── database/                # schema.sql, create_admin.php
-├── tests/                   # regex cases + Node/PHP runners, smoke tests
-├── docs/                    # SQA documents
-├── docker-compose.yml
-├── .htaccess
+├── app/                         # Flask application package
+│   ├── __init__.py              # Application factory
+│   ├── routes/                  # Flask Blueprints and route handlers
+│   ├── ...                      # Models, services, validators and templates
+├── scripts/
+│   └── init_db.py               # Database initialization and seed accounts
+├── tests/
+│   ├── unit/                    # Unit tests
+│   ├── integration/             # Integration tests
+│   └── selenium/                # Selenium browser automation and page objects
+├── docs/
+│   ├── SELENIUM_CODE_EXPLANATION.md
+│   ├── SELENIUM_VIVA_QUESTIONS.md
+│   ├── TEST_PLAN.md
+│   ├── TEST_CASES.md
+│   ├── TRACEABILITY.md
+│   ├── DEFECT_LOG.md
+│   └── TEST_REPORT.md
+├── reports/
+│   └── selenium-report.html     # Generated Selenium HTML report
+├── requirements-dev.txt
+├── run.py                       # Application entry point
 └── README.md
-```
-
----
-
-## 6. Getting started
-
-### Option A — Docker (recommended)
-
-```bash
+6. Quick start
+6.1 Prerequisites
+Install the following before setting up the project:
+- Python 3.13
+- pip
+- Google Chrome or Chromium for Selenium browser tests
+- Git (to clone the repository)
+6.2 Clone the repository
 git clone https://github.com/Omsongire23/Covid-flow.git
 cd Covid-flow
-docker compose up -d
-```
-
-| Service | Details |
-|---|---|
-| Web | `http://127.0.0.1:8000` |
-| Database | host `127.0.0.1`, port `3307`, database `covid_portal`, user `covid_user`, password `covid_pass` |
-
-> The database credentials above are **local development defaults** for the Docker setup. Change them before exposing the stack to any network.
-
-Create an administrator account (interactive; there is no default admin):
-
-```bash
-docker compose exec web php database/create_admin.php
-```
-
-### Option B — Native (Apache or built-in server)
-
-**Prerequisites:** PHP 8.1+ with `pdo_mysql`, `curl` and `mbstring`; MySQL 8 or MariaDB; Node.js 18+ (for tests only).
-
-Debian / Ubuntu example:
-
-```bash
+6.3 Create and activate a virtual environment
+Ubuntu / Linux:
+python3 -m venv .venv
+source .venv/bin/activate
+If venv is unavailable, install the package for your Python version:
 sudo apt update
-sudo apt install -y php php-cli php-mysql php-curl php-mbstring mariadb-server
-```
+sudo apt install python3-venv
+6.4 Install dependencies
+python -m pip install --upgrade pip
+pip install -r requirements-dev.txt
+The Selenium dependency can also be installed separately if needed:
+python -m pip install selenium==4.52.0
+Verify the key package versions:
+python --version
+python -c "import flask, selenium, pytest; print('Flask:', flask.__version__); print('Selenium:', selenium.__version__); print('pytest:', pytest.__version__)"
+6.5 Initialize the database
+python scripts/init_db.py
+The initialization script seeds the following development test accounts:
+Role	Username	Password
+Standard user	testuser	Test@123#
+Admin user	admin	Admin@123#
 
-```bash
-# 1. Create the schema
-mysql -u root -p < database/schema.sql
 
-# 2. Configure credentials
-cp config/config.example.php config/config.local.php   # then edit DB settings
+These are local testing credentials only. Do not reuse them in a public or production deployment. Change or remove seeded credentials before deployment.
 
-# 3. Run the development server
-php -S 127.0.0.1:8000 -t public
-```
+6.6 Run the web application
+python run.py
+Open the application:
 
-Using XAMPP/WAMP: point a virtual host or alias at the `public/` directory and make sure the `curl` and `pdo_mysql` extensions are enabled in `php.ini`.
+http://127.0.0.1:5000
 
----
+Keep the Flask server running while executing Selenium browser tests.
+7. Validation and STQA techniques
+The project demonstrates structured test design and input validation across nine categories in the Quality Lab.
+7.1 Validation categories
+The Quality Lab supports nine validation categories, including:
+- Username
+- Full name
+- Email
+- Password
+- Indian mobile number
+- Date of birth
+- PIN code
+- Country search
+- Community comment
+The exact rules should be maintained in the application's centralized validator and reflected in the corresponding test cases.
+7.2 Equivalence Partitioning (EP)
+Equivalence Partitioning divides input data into groups expected to behave similarly. Representative values from valid and invalid classes are selected to reduce redundant test execution.
 
-## 7. Regular-expression validation
+Example for a username field:
+Partition	Example	Expected result
+Valid username	om_user12	Accept
+Too short	om1	Reject
+Contains spaces	om user	Reject
+Contains unsupported symbols	om@user	Reject
 
-All patterns live in [`config/patterns.json`](config/patterns.json). PHP loads the file for server-side validation, and `api/patterns.php` serves the same file to the browser, so the client and server cannot drift apart.
 
-| Field | What it guarantees |
-|---|---|
-| `username` | 4–20 characters; starts with a letter; letters, digits and underscore only. |
-| `fullName` | 2–60 letters (any language); single spaces, apostrophes or hyphens between words. |
-| `email` | 6–254 characters; no consecutive, leading or trailing dots in the local part; TLD of at least two letters. |
-| `password` | 8–64 characters with lowercase, uppercase, digits, and special characters; no whitespace. |
-| `phoneIN` | 10-digit Indian mobile number starting with 6–9; optional `+91` or `0` prefix. |
-| `dob` | `YYYY-MM-DD` format with months 01–12 and days 01–31. Calendar validity and age limits are checked separately in PHP. |
-| `pinCode` | 6 digits; first digit 1–9. |
-| `countryQuery` | 2–56 letters; spaces, dots, apostrophes and hyphens allowed; rejects injection and path strings. |
-| `comment` | 3–500 characters; not blank; rejects HTML-tag-like content. |
+7.3 Boundary Value Analysis (BVA)
+Boundary Value Analysis tests values at, immediately below and immediately above defined input limits.
 
-<details>
-<summary><strong>Show the raw patterns</strong></summary>
+For a field with a 4–20 character limit, representative tests include:
+Input length	Expected result
+3	Reject
+4	Accept, if other rules pass
+5	Accept, if other rules pass
+19	Accept, if other rules pass
+20	Accept, if other rules pass
+21	Reject
 
-```text
-username      ^[A-Za-z][A-Za-z0-9_]{3,19}$
-fullName      ^(?=.{2,60}$)[\p{L}\p{M}]+(?:[ '\-][\p{L}\p{M}]+)*$
-email         ^(?=.{6,254}$)(?!.*\.\.)[A-Za-z0-9](?:[A-Za-z0-9._%+\-]*[A-Za-z0-9])?@(?:[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,24}$
-password      ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])\S{8,64}$
-phoneIN       ^(?:\+91[\- ]?|0)?[6-9]\d{9}$
-dob           ^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])$
-pinCode       ^[1-9]\d{5}$
-countryQuery  ^[\p{L}\p{M}][\p{L}\p{M} .'\-]{1,55}$
-comment       ^(?=[\s\S]{3,500}$)(?=[\s\S]*\S)(?![\s\S]*<[^>]*>)[\s\S]*$
-```
 
-In `patterns.json`, the backslashes are JSON-escaped (`\\d` instead of `\d`).
+7.4 Regex and semantic validation
+Regular expressions validate input structure and format. Semantic validation checks whether the value makes sense in context. For example, a date can match a YYYY-MM-DD format but still represent an impossible calendar date. Such checks should be handled by application-level validation in addition to regex checks.
+8. Running the automated tests
+Run commands from the project root with the virtual environment activated.
+8.1 Unit tests
+pytest tests/unit -v
+8.2 Integration tests
+pytest tests/integration -v
+8.3 Selenium browser automation tests
+mkdir -p reports
+pytest tests/selenium -v --html=reports/selenium-report.html --self-contained-html
+Alternatively, use the project convenience script:
+./scripts/run_selenium_tests.sh
+8.4 Run the complete test suite
+pytest tests -v
+8.5 View the HTML report
+After a successful pytest-html run, open:
+reports/selenium-report.html
+The report is generated by the test command; it will not exist until the relevant tests have been executed.
+Test-count clarification
+The project documentation describes different test scopes:
+- 67 tests passed — the test badge / reported test battery count supplied for this project.
+- 124 validation cases — the Quality Lab's regex and boundary-case runner.
+- 191 documented test cases — the broader test-case catalogue across unit, integration, Selenium and regex testing.
+These figures describe different collections and should not be added together. Update the badge and report whenever the actual executed test results change. Do not claim a test passed unless it was executed successfully.
+9. Selenium browser automation
+The project uses Selenium 4 WebDriver to automate browser-level testing in Google Chrome. The browser tests follow the Page Object Model (POM) design pattern.
+9.1 Why Page Object Model?
+POM separates page-specific locators and browser interactions from test assertions. This improves maintainability, reusability and readability.
+Component	Purpose
+BasePage	Shared parent page object containing the WebDriver instance, base URL and reusable browser interaction methods.
+By	Provides locator strategies such as ID, CSS selector, XPath and class name.
+WebDriverWait	Implements explicit waits for elements and page conditions.
+expected_conditions (EC)	Provides conditions such as element visibility, presence and clickability.
+TimeoutException	Handles cases where an expected browser condition is not met within the configured timeout.
 
-</details>
 
-### Cross-engine rules
+9.2 Selenium imports
+The project's page objects use imports such as:
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+9.3 Verify Selenium installation
+python -c 'from selenium.webdriver.common.by import By; from selenium.webdriver.support.ui import WebDriverWait; from selenium.webdriver.support import expected_conditions as EC; from selenium.common.exceptions import TimeoutException; print("All Selenium imports working!")'
+Expected output:
+All Selenium imports working!
+9.4 Chrome and driver setup
+Install Google Chrome or Chromium and ensure it can be launched on your machine. Selenium 4 includes Selenium Manager, which can automatically discover or manage a compatible browser driver in supported environments. A separate manual ChromeDriver installation is generally not necessary.
 
-JavaScript and PHP (PCRE) interpret the same pattern slightly differently. These rules are mandatory, and each one is covered by tests.
+For headless execution, configure Chrome options in the project's WebDriver setup. The test suite should use explicit waits rather than depending on fixed delays wherever possible.
+9.5 Python interpreter selection in VS Code / Antigravity
+Make sure the IDE uses the same Python environment where Selenium and the project dependencies are installed.
+1. Press Ctrl + Shift + P.
+2. Select Python: Select Interpreter.
+3. Choose the project's .venv interpreter, usually .venv/bin/python.
+If you intentionally use the Anaconda base environment instead, select its Python executable (for example, /home/<your-user>/anaconda3/bin/python) and install all project dependencies in that same environment.
 
-1. **JavaScript:** compile with the `u` flag — `new RegExp(pattern, 'u')`.
-2. **PHP:** compile with the `D` and `u` modifiers — `preg_match('~' . $pattern . '~Du', $value)` — and treat a `false` result as invalid.
-   - **`D`** stops PCRE's `$` from matching *before a trailing newline*. Without it, `"abcd\n"` is accepted as a valid username.
-   - **`u`** enables `\p{L}` / `\p{M}` and counts characters instead of bytes, so non-Latin names and comments are handled correctly.
-3. **ReDoS-safe ordering:** the `comment` pattern checks length **first**, then blankness, then tags. The original ordering took several seconds on a 100,000-character hostile input; the final one takes under 2 ms.
-4. **Shape vs. meaning:** regex checks the *shape* of input. Semantic rules (real calendar dates, age range, allow-lists for state/service/gender) are enforced in `includes/validate.php`.
+Check the active interpreter:
+which python
+python --version
+python -m pip show selenium
+The Selenium package being installed and its imports succeeding only verify the dependency setup. They do not prove that the browser tests pass. Run the actual test suite and inspect its report before recording execution results.
 
----
+10. QA documentation and reports
+The docs/ directory contains the project's examination and quality-assurance artifacts.
+Document	Description
+[`docs/SELENIUM_CODE_EXPLANATION.md`](docs/SELENIUM_CODE_EXPLANATION.md)	Walkthrough of Page Objects, locators, explicit waits and assertions.
+[`docs/SELENIUM_VIVA_QUESTIONS.md`](docs/SELENIUM_VIVA_QUESTIONS.md)	32 practical Selenium viva questions and concise answers based on the implementation.
+[`docs/TEST_PLAN.md`](docs/TEST_PLAN.md)	Formal STQA test plan, scope, tools and objectives.
+[`docs/TEST_CASES.md`](docs/TEST_CASES.md)	Catalogue of 191 test cases across unit, integration, Selenium and regex testing.
+[`docs/TRACEABILITY.md`](docs/TRACEABILITY.md)	Requirements Traceability Matrix linking FR-01 through FR-12 to implementation and tests.
+[`docs/DEFECT_LOG.md`](docs/DEFECT_LOG.md)	Defects identified during testing, their causes and resolutions.
+[`docs/TEST_REPORT.md`](docs/TEST_REPORT.md)	Test execution summary and recorded metrics.
+[`reports/selenium-report.html`](reports/selenium-report.html)	Generated standalone HTML report from pytest-html.
 
-## 8. Testing
 
-Run everything:
+Use the test report as the source of truth for the latest execution status. Regenerate reports after test changes so the documentation reflects the current codebase.
+11. Security and reliability
+The project demonstrates the following security and reliability practices:
+Area	Implementation
+Password storage	Password hashing and verification using werkzeug.security.
+SQL injection protection	Parameterized SQL queries.
+Database integrity	SQLite transactions and foreign-key constraints.
+Session security	Session handling and login throttling.
+XSS mitigation	Validation and safe handling of user-submitted comments and rendered content.
+Duplicate registration	Duplicate prevention in programme registration.
+External data resilience	Live data retrieval with a verified offline fallback.
+User feedback	Clear validation messages and emergency health warning indicators.
 
-```bash
-bash tests/run-all.sh
-```
 
-| # | Suite | Command | Checks |
-|---|---|---|---|
-| 1 | JavaScript regex | `node tests/regex.test.mjs` | Every case in `tests/regex-cases.json` against the JS engine, plus timing on hostile inputs. |
-| 2 | PHP regex | `docker compose exec web php tests/regex_test.php` | The same cases against PCRE with `~…~Du`. |
-| 3 | Engine parity | `node tests/engine-parity.mjs` | Fails if the JS and PHP engines ever disagree on any case. |
-| 4 | Semantic validator | `docker compose exec web php tests/validator_test.php` | Calendar dates, age range, phone normalisation, allow-lists. |
-| 5 | HTTP smoke and security | `bash tests/smoke.sh` | Endpoint responses, CSRF, auth, headers, injection attempts. |
+Security controls should be verified against the current implementation and corresponding test cases. Avoid treating a feature as secure solely because it is listed here.
+12. Known limitations
+- Live statistics depend on the availability and response format of the external disease.sh service. The application should indicate when fallback data is being displayed.
+- COVID-19 statistics may be historical, incomplete or no longer updated by the upstream provider. The interface should display source and synchronization timestamps where available.
+- Selenium browser tests require a supported browser installation and a running local application.
+- Selenium Manager's automatic driver management may require network access the first time it resolves a browser driver.
+- The seeded usernames and passwords are for local development and examination only; they must not be used in production.
+- The test-count badge is a snapshot and must be updated after the actual test suite changes or is rerun.
+13. License and disclaimer
+Developed for educational demonstration as part of a Software Testing and Quality Assurance (STQA) mini project.
 
-Without Docker, run the PHP suites directly: `php tests/regex_test.php`, `php tests/validator_test.php`.
+Medical information is provided for general awareness and is attributed to official sources such as the World Health Organization (WHO) and the Ministry of Health and Family Welfare (MoHFW), Government of India, where applicable.
+Medical disclaimer: COVID-FLOW is an academic information and testing project. It is not a medical diagnostic tool and does not replace professional medical advice, diagnosis or treatment. For emergencies, contact local emergency services or the appropriate official health helpline.
 
-### Quality Lab
+14. Author
+Om Songire — @Omsongire23
 
-Open **`/quality-lab.php`** for an interactive view of the testing work:
+GitHub repository: github.com/Omsongire23/Covid-flow
 
-- **Live tester** — pick a field, type input and see an instant pass/fail.
-- **Suite runner** — run all cases in the browser, filter by result or field, and export **CSV** or **JSON**.
-- **Explainer cards** — the `D` modifier, ReDoS ordering and shape-vs-semantic validation, drawn from real findings.
-
----
-
-## 9. QA documentation
-
-All course deliverables are in [`docs/`](docs/):
-
-| Document | Purpose |
-|---|---|
-| [`TEST_PLAN.md`](docs/TEST_PLAN.md) | Strategy, scope, entry/exit criteria and environment. |
-| [`TEST_CASES.md`](docs/TEST_CASES.md) | Catalogue of system, security, API and regex test cases. |
-| [`TRACEABILITY.md`](docs/TRACEABILITY.md) | Matrix linking FR-01 … FR-13 to test cases. |
-| [`DEFECT_LOG.md`](docs/DEFECT_LOG.md) | Defects found, root causes and fixes. |
-| [`TEST_REPORT.md`](docs/TEST_REPORT.md) | Execution results with command output. |
-
-For current pass/fail counts, treat `docs/TEST_REPORT.md` as the source of truth.
-
----
-
-## 10. Security
-
-| Area | Measure |
-|---|---|
-| SQL injection | PDO prepared statements only, with native (non-emulated) preparation. |
-| XSS | All dynamic output escaped with `e()` (`htmlspecialchars` with `ENT_QUOTES \| ENT_SUBSTITUTE`, UTF-8); comments are stored raw and escaped on output. |
-| CSP | No inline scripts or styles. `default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'` |
-| CSRF | 32-byte random token per session on every state-changing request, compared with `hash_equals`. |
-| Passwords | `password_hash()` / `password_verify()`; rehash on login when needed. |
-| Brute force | 5 failed attempts per (username, IP) in 15 minutes returns HTTP 429. |
-| User enumeration | One generic login error; a dummy hash is verified when the user does not exist. |
-| Sessions | `HttpOnly`, `SameSite=Lax`, `Secure` over HTTPS, ID regeneration on login, 30-minute idle timeout. |
-| Privacy | The browser makes no third-party requests; the registration form collects no medical history. |
-
----
-
-## 11. Known limitations
-
-- **Usernames are ASCII-only** by design.
-- **The email pattern is stricter than RFC 5322:** no quoted local parts, IP-literal domains or internationalised domains.
-- **The `dob` pattern checks shape only**; leap years and impossible dates (such as `2023-02-31`) are rejected by the PHP validator, not by regex.
-- **The comment pattern rejects tag-like text**, so input such as `5 < 6 and 7 > 3` is a documented false positive.
-- **Statistics depend on disease.sh.** Some series (for example, recovered counts) may be missing or frozen in the source; the UI labels this rather than filling gaps. When the source is unreachable, the site shows cached data with a banner or an empty state.
-- **Not production-hardened:** the Docker setup uses development credentials and HTTP. Use HTTPS and strong secrets before any public deployment.
-
----
-
-## 12. Vercel Deployment
-
-By default, Vercel is optimized for Node.js and static files, which causes raw `.php` files to download rather than execute. CovidFlow includes a complete Vercel Serverless Function setup powered by the `vercel-php` community runtime (`vercel-php@0.7.4` matching PHP 8.3).
-
-### Architecture & Routing
-- **Serverless Entrypoint:** [`api/index.php`](api/index.php) acts as the front-controller router for all dynamic PHP requests (`public/index.php`, `public/statistics.php`, `public/quality-lab.php`, `public/api/*`, `public/admin/*`).
-- **Static Assets:** [`vercel.json`](vercel.json) routes `/assets/(.*)` directly to `/public/assets/$1` via Vercel's global CDN edge network.
-- **Clean URLs:** Routes like `/statistics` and `/quality-lab` resolve automatically alongside direct script extensions (`.php`).
-- **Filesystem & Session Protection:** Serverless environments are read-only; PHP logs and sessions automatically fallback to `/tmp` and system logs.
-
-### Environment Variables
-Configure these in **Vercel Project Settings &rarr; Environment Variables**:
-
-| Variable | Description | Example / Default |
-|---|---|---|
-| `DATABASE_URL` | *(Recommended)* Full MySQL connection URL | `mysql://user:pass@host:3306/covid_portal` |
-| `DB_HOST` | MySQL hostname (if not using `DATABASE_URL`) | `your-db-host.provider.com` |
-| `DB_PORT` | MySQL port | `3306` |
-| `DB_NAME` | Database name | `covid_portal` |
-| `DB_USER` | Database user | `covid_user` |
-| `DB_PASS` / `DB_PASSWORD` | Database password | `your_secure_password` |
-| `APP_ENV` | Application environment | `production` |
-| `BASE_URL` | Public production URL | `https://your-project.vercel.app` |
-| `COVID_API_BASE` | Upstream disease.sh base URL | `https://disease.sh/v3/covid-19/` |
-
-> **Note on Database:** You can use any cloud MySQL / MariaDB provider (such as TiDB Serverless, PlanetScale, Aiven, Supabase, AWS RDS, or Railway). Static information pages (Home, Statistics, Quality Lab, Symptoms, Prevention, Myths, Helplines) and Disease.sh API endpoints will load even before connecting a database.
-
----
-
-## 13. Data attribution and disclaimer
-
-- **Statistics:** retrieved from the open [disease.sh](https://disease.sh) API.
-- **Guidance:** cited from the World Health Organization (WHO) and the Ministry of Health and Family Welfare (MoHFW), Government of India.
-
-> **Medical disclaimer:** This website was built for academic Software Testing and Quality Assurance purposes. It does not replace professional medical advice, diagnosis or treatment. In an emergency, contact your local emergency services or the national helpline **1075**.
-
----
-
-## 14. Author
-
-**Om** — [@Omsongire23](https://github.com/Omsongire23)
-
-If you reuse this project, please keep the data attribution and the medical disclaimer.
+If you reuse this project, retain the relevant data attribution and medical disclaimer.

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Account Login{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="auth-card-wrapper max-w-md mx-auto">
+    <div class="card" id="loginCard">
+      <div class="card-header text-center">
+        <div class="auth-icon mb-2">&#x1F510;</div>
+        <h1 class="card-title text-2xl" id="loginHeading">Sign In to Covid-flow</h1>
+        <p class="card-subtitle">Access your account, community notes, and programme history</p>
+      </div>
+
+      <div class="card-body">
+        {% if errors.get('auth') %}
+          <div class="alert alert-danger mb-4" id="loginAuthError">
+            {{ errors.auth }}
+          </div>
+        {% endif %}
+
+        <form action="{{ url_for('auth.login', next=request.args.get('next')) }}" method="POST" id="loginForm" novalidate>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <!-- Username -->
+          <div class="form-group mb-4">
+            <label for="usernameInput" class="form-label font-bold">Username <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              name="username"
+              id="usernameInput"
+              class="form-control {% if errors.get('username') %}is-invalid{% endif %}"
+              placeholder="e.g. testuser"
+              value="{{ form_data.username }}"
+              autocomplete="username"
+              required
+            >
+            {% if errors.get('username') %}
+              <div class="field-error" id="usernameError">{{ errors.username }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Password -->
+          <div class="form-group mb-6">
+            <div class="flex-between">
+              <label for="passwordInput" class="form-label font-bold">Password <span class="text-danger">*</span></label>
+            </div>
+            <input
+              type="password"
+              name="password"
+              id="passwordInput"
+              class="form-control {% if errors.get('password') %}is-invalid{% endif %}"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            >
+            {% if errors.get('password') %}
+              <div class="field-error" id="passwordError">{{ errors.password }}</div>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="loginSubmitBtn">Sign In</button>
+        </form>
+      </div>
+
+      <div class="card-footer text-center">
+        <p class="text-sm text-muted">
+          Don't have an account yet?
+          <a href="{{ url_for('auth.register') }}" class="font-bold text-primary" id="toRegisterLink">Create an Account</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

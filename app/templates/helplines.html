@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Emergency Helplines{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="page-title-block">
+    <div class="badge badge-danger mb-2">24x7 Emergency Contacts</div>
+    <h1 class="page-title" id="helplinesPageHeading">National &amp; Regional Helplines Directory</h1>
+    <p class="page-lead">Immediate medical consultation, psychological counseling, and emergency assistance helplines.</p>
+  </div>
+
+  <div class="grid grid-3 mb-8">
+    <div class="card helpline-card border-primary">
+      <div class="card-body">
+        <span class="badge badge-primary mb-2">Toll-Free &bull; 24x7</span>
+        <h2 class="text-xl font-bold mb-1">National COVID-19 Helpline</h2>
+        <div class="helpline-number text-2xl font-mono font-bold text-primary mb-2">1075</div>
+        <p class="text-muted text-sm mb-4">Ministry of Health and Family Welfare (MoHFW) Government of India central helpline.</p>
+        <a href="tel:1075" class="btn btn-primary btn-sm btn-block">Call 1075</a>
+      </div>
+    </div>
+
+    <div class="card helpline-card border-danger">
+      <div class="card-body">
+        <span class="badge badge-danger mb-2">Emergency Services</span>
+        <h2 class="text-xl font-bold mb-1">National Emergency Unified Number</h2>
+        <div class="helpline-number text-2xl font-mono font-bold text-danger mb-2">112</div>
+        <p class="text-muted text-sm mb-4">All-in-one emergency helpline for police, fire, and immediate ambulance dispatch.</p>
+        <a href="tel:112" class="btn btn-outline btn-sm btn-block">Call 112</a>
+      </div>
+    </div>
+
+    <div class="card helpline-card border-info">
+      <div class="card-body">
+        <span class="badge badge-info mb-2">Mental Health</span>
+        <h2 class="text-xl font-bold mb-1">KIRAN Mental Health Helpline</h2>
+        <div class="helpline-number text-2xl font-mono font-bold text-info mb-2">1800-599-0019</div>
+        <p class="text-muted text-sm mb-4">24/7 psychological first-aid, stress management, and anxiety counseling service.</p>
+        <a href="tel:18005990019" class="btn btn-outline btn-sm btn-block">Call KIRAN</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-8">
+    <div class="card-header">
+      <h2 class="card-title">State &amp; Union Territory Helplines</h2>
+      <p class="card-subtitle">Official state control room contacts</p>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>State / UT</th>
+              <th>Helpline Number</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Maharashtra</strong></td>
+              <td class="font-mono">020-26127394</td>
+              <td><a href="tel:02026127394" class="btn btn-sm btn-ghost">Call</a></td>
+            </tr>
+            <tr>
+              <td><strong>Delhi</strong></td>
+              <td class="font-mono">011-22307145</td>
+              <td><a href="tel:01122307145" class="btn btn-sm btn-ghost">Call</a></td>
+            </tr>
+            <tr>
+              <td><strong>Karnataka</strong></td>
+              <td class="font-mono">104</td>
+              <td><a href="tel:104" class="btn btn-sm btn-ghost">Call</a></td>
+            </tr>
+            <tr>
+              <td><strong>Tamil Nadu</strong></td>
+              <td class="font-mono">044-29510500</td>
+              <td><a href="tel:04429510500" class="btn btn-sm btn-ghost">Call</a></td>
+            </tr>
+            <tr>
+              <td><strong>Gujarat</strong></td>
+              <td class="font-mono">104</td>
+              <td><a href="tel:104" class="btn btn-sm btn-ghost">Call</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

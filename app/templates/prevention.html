@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Prevention Guidelines{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="page-title-block">
+    <div class="badge badge-primary mb-2">Evidence-Based Clinical Guidance</div>
+    <h1 class="page-title" id="preventionPageHeading">COVID-19 Prevention &amp; Transmission Mitigation</h1>
+    <p class="page-lead">Standardized infection prevention protocols compiled from World Health Organization (WHO) and MoHFW directives.</p>
+  </div>
+
+  <div class="grid grid-2 mb-8">
+    {% for item in content.prevention %}
+    <div class="card prevention-card">
+      <div class="card-body">
+        <div class="card-tag">{{ item.category | capitalize }}</div>
+        <h2 class="card-title text-xl mb-3">{{ item.title }}</h2>
+        <p class="text-muted mb-4">{{ item.desc }}</p>
+        <div class="source-attribution">
+          <small class="text-subtle">Source: <a href="{{ item.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ item.source }}</a></small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="card info-banner-card">
+    <div class="card-body flex-items-center">
+      <div>
+        <h3 class="font-bold text-lg mb-1">Looking for Vaccination Protection?</h3>
+        <p class="text-muted">Vaccines significantly lower your risk of severe disease, ICU admission, and death.</p>
+      </div>
+      <a href="{{ url_for('public.vaccination') }}" class="btn btn-primary">Vaccine Facts &rarr;</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

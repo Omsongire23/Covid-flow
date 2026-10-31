@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+
+{% block title %}COVID-19 Dashboard{% endblock %}
+{% block meta_description %}Real-time global COVID-19 health intelligence dashboard — live statistics, prevention protocols, symptom checker, vaccination data and STQA Quality Lab.{% endblock %}
+
+{% block extra_head %}
+<style>
+  .dash-confirmed-accent { --card-accent: var(--primary); --card-glow: var(--primary-glow); --card-soft: var(--primary-soft); }
+  .dash-active-accent    { --card-accent: var(--warn);    --card-glow: var(--warn-soft);   --card-soft: var(--warn-soft); }
+  .dash-recovered-accent { --card-accent: var(--ok);      --card-glow: var(--ok-soft);     --card-soft: var(--ok-soft); }
+  .dash-deaths-accent    { --card-accent: var(--danger);  --card-glow: var(--danger-soft); --card-soft: var(--danger-soft); }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="dash-hero" id="heroSection" aria-labelledby="mainDashboardHeading">
+  <div class="dash-hero-orb dash-hero-orb--blue" aria-hidden="true"></div>
+  <div class="dash-hero-orb dash-hero-orb--purple" aria-hidden="true"></div>
+  <div class="dash-hero-orb dash-hero-orb--teal" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="dash-hero-inner">
+      <div class="dash-hero-content">
+        <div class="dash-live-pill" id="heroDataSourceLabel" aria-live="polite">
+          <span class="dash-live-dot" aria-hidden="true"></span>
+          <span>{{ stats.source_status }}</span>
+        </div>
+
+        <h1 class="dash-hero-title" id="mainDashboardHeading">
+          COVID-19 Health Intelligence <span class="dash-hero-gradient-text">Portal</span>
+        </h1>
+
+        <p class="dash-hero-subtitle">
+          Reliable global pandemic surveillance, evidence-based clinical prevention guidelines, and a verifiable software engineering test laboratory — all in one place.
+        </p>
+
+        <div class="dash-hero-actions">
+          <a href="{{ url_for('public.statistics') }}" class="btn btn-primary btn-lg" id="heroExploreStatsBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Explore Statistics
+          </a>
+          <a href="{{ url_for('public.quality_lab') }}" class="btn btn-outline btn-lg" id="heroQualityLabBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/></svg>
+            Quality Lab
+          </a>
+        </div>
+
+        <div class="dash-hero-meta" id="heroLastUpdated">
+          <span class="dash-meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Last sync: <strong>{{ stats.last_updated }}</strong>
+          </span>
+          <span class="dash-meta-sep" aria-hidden="true">·</span>
+          <span class="dash-meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Source: <a href="{{ stats.source_url }}" target="_blank" rel="noopener noreferrer" class="dash-meta-link">disease.sh / WHO</a>
+          </span>
+        </div>
+      </div>
+
+      <div class="dash-hero-preview" aria-hidden="true">
+        <div class="dash-preview-card">
+          <div class="dash-preview-card-bar"></div>
+          <div class="dash-preview-header">
+            <span class="dash-preview-badge">LIVE GLOBAL</span>
+            <span class="dash-preview-status">
+              <span class="dash-live-dot dash-live-dot--sm"></span> Active
+            </span>
+          </div>
+          <div class="dash-preview-metrics">
+            <div class="dash-preview-metric">
+              <span class="dash-preview-metric-value">{{ format_number(stats.cases) }}</span>
+              <span class="dash-preview-metric-label">Total Cases</span>
+            </div>
+            <div class="dash-preview-metric">
+              <span class="dash-preview-metric-value dash-text-ok">{{ format_number(stats.recovered or 0) }}</span>
+              <span class="dash-preview-metric-label">Recovered</span>
+            </div>
+            <div class="dash-preview-metric">
+              <span class="dash-preview-metric-value dash-text-danger">{{ format_number(stats.deaths) }}</span>
+              <span class="dash-preview-metric-label">Deaths</span>
+            </div>
+          </div>
+          <a href="{{ url_for('public.statistics') }}" class="dash-preview-cta">
+            View full trends
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAT CARDS -->
+<section class="section dash-stats-section" id="statsOverviewSection" aria-labelledby="globalMetricsTitle">
+  <div class="container">
+    <div class="dash-section-header">
+      <div>
+        <div class="dash-eyebrow">Pandemic Surveillance</div>
+        <h2 class="dash-section-title" id="globalMetricsTitle">Global Pandemic Statistics</h2>
+        <p class="dash-section-sub">Aggregated worldwide surveillance metrics from official public health repositories</p>
+      </div>
+      <a href="{{ url_for('public.statistics') }}" class="btn btn-sm btn-ghost dash-header-link">
+        Historical Trends
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+
+    <div class="dash-stat-grid" role="list">
+
+      <article class="dash-stat-card dash-confirmed-accent js-stagger-item" id="cardTotalCases" role="listitem">
+        <div class="dash-stat-accent-bar"></div>
+        <div class="dash-stat-top">
+          <div class="dash-stat-icon-wrap" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <span class="dash-stat-label">Total Confirmed Cases</span>
+        </div>
+        <div class="dash-stat-value" id="valTotalCases">{{ format_number(stats.cases) }}</div>
+        <div class="dash-stat-footer">
+          {% if stats.todayCases and stats.todayCases > 0 %}
+            <span class="dash-stat-badge dash-stat-badge--danger">+{{ format_number(stats.todayCases) }} today</span>
+          {% else %}
+            <span class="dash-stat-sub">Cumulative global cases</span>
+          {% endif %}
+        </div>
+      </article>
+
+      <article class="dash-stat-card dash-active-accent js-stagger-item" id="cardActiveCases" role="listitem">
+        <div class="dash-stat-accent-bar"></div>
+        <div class="dash-stat-top">
+          <div class="dash-stat-icon-wrap" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          </div>
+          <span class="dash-stat-label">Active Cases</span>
+        </div>
+        <div class="dash-stat-value" id="valActiveCases">{{ format_number(stats.active) }}</div>
+        <div class="dash-stat-footer">
+          <span class="dash-stat-sub">Under ongoing medical supervision</span>
+        </div>
+      </article>
+
+      <article class="dash-stat-card dash-recovered-accent js-stagger-item" id="cardRecoveredCases" role="listitem">
+        <div class="dash-stat-accent-bar"></div>
+        <div class="dash-stat-top">
+          <div class="dash-stat-icon-wrap" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <span class="dash-stat-label">Reported Recoveries</span>
+        </div>
+        <div class="dash-stat-value" id="valRecoveredCases">
+          {% if stats.recovered and stats.recovered > 0 %}{{ format_number(stats.recovered) }}{% else %}Archived{% endif %}
+        </div>
+        <div class="dash-stat-footer">
+          <span class="dash-stat-badge dash-stat-badge--ok">Documented recoveries</span>
+        </div>
+      </article>
+
+      <article class="dash-stat-card dash-deaths-accent js-stagger-item" id="cardTotalDeaths" role="listitem">
+        <div class="dash-stat-accent-bar"></div>
+        <div class="dash-stat-top">
+          <div class="dash-stat-icon-wrap" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <span class="dash-stat-label">Total Deaths</span>
+        </div>
+        <div class="dash-stat-value" id="valTotalDeaths">{{ format_number(stats.deaths) }}</div>
+        <div class="dash-stat-footer">
+          {% if stats.todayDeaths and stats.todayDeaths > 0 %}
+            <span class="dash-stat-badge dash-stat-badge--danger">+{{ format_number(stats.todayDeaths) }} today</span>
+          {% else %}
+            <span class="dash-stat-sub">Documented fatalities</span>
+          {% endif %}
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- HEALTH RESOURCES -->
+<section class="section dash-resources-section" aria-labelledby="resourcesTitle">
+  <div class="container">
+    <div class="dash-section-header">
+      <div>
+        <div class="dash-eyebrow">Evidence-Based Guidance</div>
+        <h2 class="dash-section-title" id="resourcesTitle">Verified Public Health Resources</h2>
+        <p class="dash-section-sub">Clinical guidelines, symptom assessment, and vaccination intelligence from WHO &amp; MoHFW</p>
+      </div>
+    </div>
+
+    <div class="dash-resource-grid">
+      <a href="{{ url_for('public.prevention') }}" class="dash-resource-card dash-resource-card--primary js-stagger-item" id="resourcePreventionCard">
+        <div class="dash-resource-icon-wrap" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="dash-resource-body">
+          <h3 class="dash-resource-title">Prevention Protocols</h3>
+          <p class="dash-resource-desc">WHO-approved masking, indoor ventilation, and effective hand hygiene techniques to reduce transmission.</p>
+        </div>
+        <div class="dash-resource-arrow" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <a href="{{ url_for('public.symptoms') }}" class="dash-resource-card dash-resource-card--warn js-stagger-item" id="resourceSymptomsCard">
+        <div class="dash-resource-icon-wrap" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 22H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2"/><path d="M22 13H11"/><path d="M22 17H11"/><path d="M22 21H11"/><path d="M8 6H6"/><path d="M8 10H6"/></svg>
+        </div>
+        <div class="dash-resource-body">
+          <h3 class="dash-resource-title">Symptom Assessment</h3>
+          <p class="dash-resource-desc">Identify common symptoms, emergency respiratory warning signs, and when to seek urgent clinical evaluation.</p>
+        </div>
+        <div class="dash-resource-arrow" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <a href="{{ url_for('public.vaccination') }}" class="dash-resource-card dash-resource-card--ok js-stagger-item" id="resourceVaccineCard">
+        <div class="dash-resource-icon-wrap" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg>
+        </div>
+        <div class="dash-resource-body">
+          <h3 class="dash-resource-title">Vaccination Facts</h3>
+          <p class="dash-resource-desc">Clinical trial data, vaccine safety records, booster eligibility, and evidence-based debunking of misinformation.</p>
+        </div>
+        <div class="dash-resource-arrow" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTRIES TABLE -->
+<section class="section dash-countries-section" aria-labelledby="countriesTableTitle">
+  <div class="container">
+    <div class="dash-section-header">
+      <div>
+        <div class="dash-eyebrow">Regional Breakdown</div>
+        <h2 class="dash-section-title" id="countriesTableTitle">Global Country Highlights</h2>
+        <p class="dash-section-sub">Top affected regions based on official public health reporting</p>
+      </div>
+      <a href="{{ url_for('public.statistics') }}" class="btn btn-sm btn-outline dash-header-link">
+        Full Countries Table
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+
+    <div class="dash-table-wrap">
+      <table class="dash-data-table" id="dashboardCountriesTable">
+        <caption class="sr-only">Top countries by COVID-19 case count</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="dash-th-rank">#</th>
+            <th scope="col">Country</th>
+            <th scope="col" class="text-right">Total Cases</th>
+            <th scope="col" class="text-right">Active</th>
+            <th scope="col" class="text-right">Deaths</th>
+            <th scope="col" class="text-right">Case Share</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in top_countries %}
+          <tr class="dash-table-row js-stagger-item">
+            <td class="dash-td-rank" aria-label="Rank {{ loop.index }}">{{ loop.index }}</td>
+            <td>
+              <span class="dash-country-name">{{ c.country }}</span>
+            </td>
+            <td class="text-right dash-mono">{{ format_number(c.cases) }}</td>
+            <td class="text-right dash-mono dash-text-warn">{{ format_number(c.active) }}</td>
+            <td class="text-right dash-mono dash-text-danger">{{ format_number(c.deaths) }}</td>
+            <td class="text-right">
+              {% if stats.cases and stats.cases > 0 %}
+                {% set pct = (c.cases / stats.cases * 100) | round(1) %}
+                <div class="dash-bar-cell" title="{{ pct }}% of global cases">
+                  <div class="dash-bar-bg">
+                    <div class="dash-bar-fill" style="width: {{ [pct * 2, 100] | min }}%"></div>
+                  </div>
+                  <span class="dash-bar-label">{{ pct }}%</span>
+                </div>
+              {% else %}
+                <span class="dash-text-muted">—</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- STQA CALLOUT -->
+<section class="dash-callout-section" aria-labelledby="calloutTitle">
+  <div class="container">
+    <div class="dash-callout-card">
+      <div class="dash-callout-glow" aria-hidden="true"></div>
+      <div class="dash-callout-content">
+        <div class="dash-eyebrow dash-eyebrow--light">STQA Engineering Lab</div>
+        <h2 class="dash-callout-title" id="calloutTitle">Interactive Regex Quality Lab</h2>
+        <p class="dash-callout-desc">
+          Test all 9 validation categories in real time — boundary values, Unicode support, injection prevention — backed by 124 automated test cases with 100% pass rate.
+        </p>
+        <div class="dash-callout-badges">
+          <span class="dash-callout-badge">124 Test Cases</span>
+          <span class="dash-callout-badge">9 Validators</span>
+          <span class="dash-callout-badge">100% Pass Rate</span>
+          <span class="dash-callout-badge">Selenium 4 Tested</span>
+        </div>
+        <a href="{{ url_for('public.quality_lab') }}" class="btn btn-primary btn-lg" id="calloutQualityLabBtn">
+          Open Quality Lab
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <div class="dash-callout-visual" aria-hidden="true">
+        <div class="dash-callout-code-mock">
+          <div class="dash-code-line"><span class="dash-code-ok">PASS</span> username: <span class="dash-code-str">"john_doe"</span></div>
+          <div class="dash-code-line"><span class="dash-code-ok">PASS</span> email: <span class="dash-code-str">"user@domain.com"</span></div>
+          <div class="dash-code-line"><span class="dash-code-ok">PASS</span> password: <span class="dash-code-str">"Secure@123#"</span></div>
+          <div class="dash-code-line"><span class="dash-code-ok">PASS</span> phoneIN: <span class="dash-code-str">"+91 98765 43210"</span></div>
+          <div class="dash-code-line"><span class="dash-code-err">FAIL</span> pinCode: <span class="dash-code-str">"000000"</span></div>
+          <div class="dash-code-status">124 / 124 passed &bull; 100%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  var items = document.querySelectorAll('.js-stagger-item');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, i) {
+      if (entry.isIntersecting) {
+        setTimeout(function() {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0) scale(1)';
+        }, i * 65);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.06 });
+
+  items.forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px) scale(0.97)';
+    el.style.transition = 'opacity 0.42s cubic-bezier(0.34,1.56,0.64,1), transform 0.42s cubic-bezier(0.34,1.56,0.64,1)';
+    observer.observe(el);
+  });
+
+  var header = document.getElementById('siteHeader');
+  if (header) {
+    window.addEventListener('scroll', function() {
+      header.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+  }
+})();
+</script>
+{% endblock %}

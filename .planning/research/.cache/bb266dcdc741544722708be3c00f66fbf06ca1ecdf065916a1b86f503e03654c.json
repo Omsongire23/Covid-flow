@@ -1,0 +1,1 @@
+{"content":"pytest documents tmp_path as a unique pathlib temporary directory per test, appropriate for isolated SQLite application fixtures.","source":"web","provider":"websearch","confidence":"MEDIUM","fetched_at":"2026-10-31T17:22:24.869Z","ttl":86400000,"kind":"docs"}

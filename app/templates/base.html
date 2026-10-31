@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="description" content="{% block meta_description %}Official COVID-19 Information Portal, Live Statistics, Health Guidance, and STQA Quality Engineering Lab.{% endblock %}">
+  <title>{% block title %}Dashboard{% endblock %} | Covid-flow</title>
+
+  <!-- Early theme initialization -->
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/logo.svg') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="page-wrapper">
+  <!-- Top Announcement Bar -->
+  <aside class="announcement-bar" aria-label="Public Health Advisory">
+    <div class="container announcement-content">
+      <span>
+        <strong>National Helpline:</strong> Call <strong>1075</strong> (Toll-Free) or <strong>+91-11-23978046</strong> for COVID-19 medical assistance.
+      </span>
+      <a href="{{ url_for('public.helplines') }}" class="announcement-link">
+        View Emergency Directory &rarr;
+      </a>
+    </div>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="container header-container">
+      <a href="{{ url_for('public.index') }}" class="brand-link" id="brandLogoLink" aria-label="Covid-flow Home">
+        <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="36" height="36" class="brand-logo" aria-hidden="true">
+        <span class="brand-text">Covid<strong>flow</strong></span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary Navigation" id="mainNavigation">
+        <ul class="nav-list">
+          <li><a href="{{ url_for('public.index') }}" class="nav-link {% if request.path in ['/', '/index'] %}active{% endif %}" id="navHome">Dashboard</a></li>
+          <li><a href="{{ url_for('public.statistics') }}" class="nav-link {% if request.path == '/statistics' %}active{% endif %}" id="navStats">Statistics</a></li>
+          <li><a href="{{ url_for('public.prevention') }}" class="nav-link {% if request.path == '/prevention' %}active{% endif %}" id="navPrevention">Prevention</a></li>
+          <li><a href="{{ url_for('public.symptoms') }}" class="nav-link {% if request.path == '/symptoms' %}active{% endif %}" id="navSymptoms">Symptoms</a></li>
+          <li><a href="{{ url_for('public.vaccination') }}" class="nav-link {% if request.path == '/vaccination' %}active{% endif %}" id="navVaccine">Vaccine</a></li>
+          <li><a href="{{ url_for('public.helplines') }}" class="nav-link {% if request.path == '/helplines' %}active{% endif %}" id="navHelplines">Helplines</a></li>
+          <li><a href="{{ url_for('public.quality_lab') }}" class="nav-link highlight-link {% if request.path == '/quality-lab' %}active{% endif %}" id="navQualityLab">Quality Lab</a></li>
+        </ul>
+      </nav>
+
+      <!-- User & Theme Controls -->
+      <div class="header-actions">
+        <!-- Theme Toggle Button -->
+        <button type="button" class="btn btn-icon btn-ghost" id="themeToggleBtn" aria-label="Toggle dark/light mode" title="Toggle theme">
+          <svg class="icon" id="themeSunIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+
+        {% if g.user %}
+          <div class="user-menu-group">
+            <a href="{{ url_for('auth.profile') }}" class="btn btn-sm btn-ghost" id="navProfileBtn">
+              <span class="user-badge" id="navUsernameBadge">{{ g.user['username'] }}</span>
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline" id="navLogoutBtn">Log Out</a>
+          </div>
+        {% else %}
+          <div class="auth-buttons">
+            <a href="{{ url_for('auth.login') }}" class="btn btn-sm btn-ghost" id="navLoginBtn">Log In</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-sm btn-primary" id="navRegisterBtn">Sign Up</a>
+          </div>
+        {% endif %}
+
+        <!-- Mobile Menu Toggle -->
+        <button type="button" class="btn btn-icon btn-ghost mobile-nav-toggle" id="mobileMenuBtn" aria-label="Open mobile navigation menu" aria-expanded="false">
+          <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Navigation -->
+    <div class="mobile-drawer" id="mobileDrawer" hidden>
+      <div class="container mobile-drawer-inner">
+        <ul class="mobile-nav-list">
+          <li><a href="{{ url_for('public.index') }}" class="mobile-nav-link {% if request.path in ['/', '/index'] %}active{% endif %}">Dashboard</a></li>
+          <li><a href="{{ url_for('public.statistics') }}" class="mobile-nav-link {% if request.path == '/statistics' %}active{% endif %}">Statistics</a></li>
+          <li><a href="{{ url_for('public.prevention') }}" class="mobile-nav-link {% if request.path == '/prevention' %}active{% endif %}">Prevention</a></li>
+          <li><a href="{{ url_for('public.symptoms') }}" class="mobile-nav-link {% if request.path == '/symptoms' %}active{% endif %}">Symptoms</a></li>
+          <li><a href="{{ url_for('public.vaccination') }}" class="mobile-nav-link {% if request.path == '/vaccination' %}active{% endif %}">Vaccine</a></li>
+          <li><a href="{{ url_for('public.helplines') }}" class="mobile-nav-link {% if request.path == '/helplines' %}active{% endif %}">Helplines</a></li>
+          <li><a href="{{ url_for('public.quality_lab') }}" class="mobile-nav-link {% if request.path == '/quality-lab' %}active{% endif %}">Quality Lab</a></li>
+        </ul>
+        <div class="mobile-drawer-auth">
+          {% if g.user %}
+            <a href="{{ url_for('auth.profile') }}" class="btn btn-outline btn-block">Profile ({{ g.user['username'] }})</a>
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost btn-block">Log Out</a>
+          {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline btn-block">Log In</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-block">Sign Up</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Flash Messages Banner Container -->
+  <div class="container flash-messages-container" id="flashContainer">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible" role="alert" id="alert-{{ loop.index }}">
+            <span class="alert-message">{{ message }}</span>
+            <button type="button" class="alert-close" aria-label="Close message" onclick="this.parentElement.remove();">&times;</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Main Content Area -->
+  <main class="site-main" id="mainContent">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <!-- Mandatory Medical Disclaimer Band -->
+    <div class="footer-disclaimer-band">
+      <div class="container disclaimer-inner">
+        <p class="disclaimer-text">
+          <strong>Medical Disclaimer:</strong> This portal is developed for Software Testing and Quality Assurance (STQA) academic mini-project demonstration. Data is collected from official public health sources (WHO, MoHFW, and disease.sh archive). It does not substitute for clinical consultation, diagnosis, or professional treatment. In a medical emergency, call <strong>1075</strong> or your local emergency services immediately.
+        </p>
+      </div>
+    </div>
+
+    <div class="container footer-grid">
+      <div class="footer-col footer-about">
+        <div class="footer-brand">
+          <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="28" height="28" aria-hidden="true">
+          <span>Covid<strong>flow</strong></span>
+        </div>
+        <p class="footer-desc">
+          High-reliability public health dashboard with centralized regular-expression validation, Selenium 4 automated testing, and comprehensive STQA verification evidence.
+        </p>
+        <div class="badge badge-primary">STQA Mini Project &bull; Python Flask &bull; Selenium 4</div>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Public Health</h3>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('public.prevention') }}">Prevention Guide</a></li>
+          <li><a href="{{ url_for('public.symptoms') }}">Symptoms Checklist</a></li>
+          <li><a href="{{ url_for('public.vaccination') }}">Vaccination Facts</a></li>
+          <li><a href="{{ url_for('public.myths') }}">Myths vs Scientific Facts</a></li>
+          <li><a href="{{ url_for('public.helplines') }}">Helplines Directory</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Portals</h3>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('public.statistics') }}">Global Statistics</a></li>
+          <li><a href="{{ url_for('public.community') }}">Community Forum</a></li>
+          <li><a href="{{ url_for('public.programme') }}">Programme Registration</a></li>
+          <li><a href="{{ url_for('public.quality_lab') }}">STQA Quality Lab</a></li>
+          {% if g.user %}
+            <li><a href="{{ url_for('auth.profile') }}">User Profile</a></li>
+          {% else %}
+            <li><a href="{{ url_for('auth.login') }}">Account Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">STQA Assurance</h3>
+        <p class="footer-text-sm">Centralized 9-category regex validation, unit test coverage, parameterized SQL security, and end-to-end browser automation suite.</p>
+        <div class="footer-meta">
+          <span>Academic Year: {{ current_year }}</span>
+          <span>Status: Verified STQA Deliverable</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>&copy; {{ current_year }} Covid-flow &bull; Software Testing and Quality Assurance Mini Project.</p>
+      <div class="footer-bottom-links">
+        <a href="{{ url_for('public.quality_lab') }}">Quality Lab</a>
+        <a href="#siteHeader">Back to Top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Vendored Chart.js and Vanilla JS -->
+  <script src="{{ url_for('static', filename='vendor/chart.umd.min.js') }}"></script>
+  <script>
+    // Theme toggle handling
+    document.getElementById('themeToggleBtn')?.addEventListener('click', function() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+
+    // Mobile menu toggle
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    if (mobileBtn && mobileDrawer) {
+      mobileBtn.addEventListener('click', function() {
+        const isExpanded = mobileBtn.getAttribute('aria-expanded') === 'true';
+        mobileBtn.setAttribute('aria-expanded', !isExpanded);
+        mobileDrawer.hidden = isExpanded;
+      });
+    }
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

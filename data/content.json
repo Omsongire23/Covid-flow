@@ -45,22 +45,101 @@
   ],
   "symptoms": {
     "common": [
-      { "name": "Fever or Chills", "severity": "mild-to-moderate", "frequency": "Very Common (80-90%)" },
-      { "name": "Dry Cough", "severity": "mild-to-moderate", "frequency": "Very Common (60-70%)" },
-      { "name": "Fatigue & Body Aches", "severity": "mild-to-moderate", "frequency": "Common (40-50%)" },
-      { "name": "Loss of Taste or Smell (Anosmia)", "severity": "mild", "frequency": "Common (30-40%)" }
+      {
+        "name": "Fever or Chills",
+        "desc": "High body temperature (≥ 38°C / 100.4°F), rigors, sweating, and recurrent heat flushes.",
+        "severity": "Mild–Moderate",
+        "frequency": "Very Common (80–90%)",
+        "icon": "thermometer"
+      },
+      {
+        "name": "Dry Continuous Cough",
+        "desc": "Frequent hacking cough episodes without phlegm, lasting several hours or worsening at night.",
+        "severity": "Mild–Moderate",
+        "frequency": "Very Common (60–70%)",
+        "icon": "cough"
+      },
+      {
+        "name": "Fatigue & Generalized Body Aches",
+        "desc": "Unusual exhaustion, heavy body weakness, joint aches, and myalgia not relieved by rest.",
+        "severity": "Mild–Moderate",
+        "frequency": "Common (40–50%)",
+        "icon": "activity"
+      },
+      {
+        "name": "Loss of Taste or Smell (Anosmia)",
+        "desc": "Sudden olfactory blunting or complete loss of flavor perception and scent detection.",
+        "severity": "Mild",
+        "frequency": "Common (30–40%)",
+        "icon": "sparkles"
+      }
     ],
     "less_common": [
-      { "name": "Sore Throat", "severity": "mild", "frequency": "Less Common" },
-      { "name": "Headache", "severity": "mild-to-moderate", "frequency": "Less Common" },
-      { "name": "Congestion or Runny Nose", "severity": "mild", "frequency": "Less Common" },
-      { "name": "Nausea or Diarrhea", "severity": "mild", "frequency": "Less Common" }
+      {
+        "name": "Sore Throat & Hoarseness",
+        "desc": "Painful or scratchy sensation in the pharynx, painful swallowing, and vocal strain.",
+        "severity": "Mild",
+        "frequency": "Moderate (15–20%)",
+        "icon": "mic-off"
+      },
+      {
+        "name": "Headache & Sinus Pressure",
+        "desc": "Diffuse, throbbing frontal or band-like tension headache resistant to standard analgesics.",
+        "severity": "Mild–Moderate",
+        "frequency": "Moderate (10–15%)",
+        "icon": "shield-alert"
+      },
+      {
+        "name": "Nasal Congestion & Rhinorrhea",
+        "desc": "Stuffy, blocked nasal passages, sneezing, or persistent clear nasal discharge.",
+        "severity": "Mild",
+        "frequency": "Occasional (10%)",
+        "icon": "wind"
+      },
+      {
+        "name": "Gastrointestinal Symptoms",
+        "desc": "Nausea, diarrhea, vomiting, or abdominal cramping preceding respiratory distress.",
+        "severity": "Mild",
+        "frequency": "Occasional (5–10%)",
+        "icon": "alert-circle"
+      },
+      {
+        "name": "Conjunctivitis & Eye Irritation",
+        "desc": "Ocular redness, burning sensation, watering, and photophobia in one or both eyes.",
+        "severity": "Mild",
+        "frequency": "Rare (1–3%)",
+        "icon": "eye"
+      }
     ],
     "emergency": [
-      { "name": "Difficulty Breathing or Shortness of Breath", "action": "Seek immediate emergency medical attention." },
-      { "name": "Persistent Pain or Pressure in the Chest", "action": "Call an ambulance or visit the nearest emergency department immediately." },
-      { "name": "Confusion or Inability to Stay Awake", "action": "Urgent hospitalization required." },
-      { "name": "Pale, Gray, or Blue-Colored Skin, Lips, or Nail Beds", "action": "Sign of hypoxemia — seek emergency oxygen therapy." }
+      {
+        "name": "Difficulty Breathing or Shortness of Breath",
+        "desc": "Gasping for breath, dyspnea at rest, inability to speak full sentences, or SpO2 < 94%.",
+        "severity": "Critical",
+        "action": "Immediate emergency hospital admission and oxygen therapy required.",
+        "icon": "lungs"
+      },
+      {
+        "name": "Persistent Chest Pain or Pressure",
+        "desc": "Continuous retrosternal squeezing, sharp pleuritic pain, or severe pressure radiating to back.",
+        "severity": "Critical",
+        "action": "Call emergency helpline (1075 / 112) or reach an ER without delay.",
+        "icon": "heart"
+      },
+      {
+        "name": "Confusion or Inability to Stay Awake",
+        "desc": "Altered mental status, slurred speech, delirium, disorientation, or profound lethargy.",
+        "severity": "Critical",
+        "action": "Immediate neuro-critical resuscitation required.",
+        "icon": "zap-off"
+      },
+      {
+        "name": "Cyanosis (Pale, Gray, or Blue Lips/Nails)",
+        "desc": "Visible bluish discoloration of oral mucosa, lips, or nail beds due to arterial hypoxemia.",
+        "severity": "Emergency",
+        "action": "Sign of life-threatening arterial hypoxia — call ambulance at once.",
+        "icon": "alert-octagon"
+      }
     ],
     "source": "WHO Clinical Management of COVID-19",
     "sourceUrl": "https://www.who.int/publications/i/item/WHO-2019-nCoV-clinical-2023.2"

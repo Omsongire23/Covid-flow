@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Myths vs Facts{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="page-title-block">
+    <div class="badge badge-info mb-2">Scientific Truth</div>
+    <h1 class="page-title" id="mythsPageHeading">COVID-19 Myths vs. Scientific Facts</h1>
+    <p class="page-lead">Debunking widespread online misinformation with verifiable medical research and peer-reviewed clinical findings.</p>
+  </div>
+
+  <div class="myths-grid mb-8">
+    {% for item in content.myths %}
+    <div class="card myth-card mb-4">
+      <div class="card-body">
+        <div class="myth-row">
+          <div class="myth-side">
+            <span class="badge badge-danger mb-2">MYTH</span>
+            <h3 class="text-lg font-bold text-danger">{{ item.myth }}</h3>
+          </div>
+          <div class="fact-side">
+            <span class="badge badge-success mb-2">FACT</span>
+            <p class="text-base text-text font-medium">{{ item.fact }}</p>
+            <div class="mt-2 text-subtle text-xs">Authority: <strong>{{ item.source }}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <!-- Additional high-profile myths -->
+    <div class="card myth-card mb-4">
+      <div class="card-body">
+        <div class="myth-row">
+          <div class="myth-side">
+            <span class="badge badge-danger mb-2">MYTH</span>
+            <h3 class="text-lg font-bold text-danger">Drinking hot water, alcohol, or herbal tea cures COVID-19.</h3>
+          </div>
+          <div class="fact-side">
+            <span class="badge badge-success mb-2">FACT</span>
+            <p class="text-base text-text font-medium">No beverage or home remedy eliminates SARS-CoV-2 from your respiratory tract. Only approved antiviral medications prescribed by doctors and clinical supportive care are proven effective.</p>
+            <div class="mt-2 text-subtle text-xs">Authority: <strong>World Health Organization (WHO) Mythbusters</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card myth-card mb-4">
+      <div class="card-body">
+        <div class="myth-row">
+          <div class="myth-side">
+            <span class="badge badge-danger mb-2">MYTH</span>
+            <h3 class="text-lg font-bold text-danger">5G mobile networks transmit the virus.</h3>
+          </div>
+          <div class="fact-side">
+            <span class="badge badge-success mb-2">FACT</span>
+            <p class="text-base text-text font-medium">Viruses cannot travel on radio waves or mobile networks. COVID-19 spreads via respiratory droplets emitted when an infected person coughs, sneezes, or speaks.</p>
+            <div class="mt-2 text-subtle text-xs">Authority: <strong>WHO &amp; International Telecommunication Union (ITU)</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

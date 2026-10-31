@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block title %}STQA Quality Engineering Lab{% endblock %}
+
+{% block content %}
+<div class="container section" id="qualityLabContainer">
+  <div class="page-title-block">
+    <div class="badge badge-primary mb-2">STQA Mini Project Core Deliverable</div>
+    <h1 class="page-title" id="qualityLabHeading">STQA Quality Engineering &amp; Validation Lab</h1>
+    <p class="page-lead">Interactive validation workbench demonstrating Equivalence Partitioning, Boundary Value Analysis, Regular Expression engines, and Automated Test Execution.</p>
+  </div>
+
+  <!-- Quality Lab Section 1: Interactive Single-Input Tester -->
+  <div class="card mb-8" id="lab-tester">
+    <div class="card-header">
+      <h2 class="card-title text-xl">1. Interactive Regular Expression Tester</h2>
+      <p class="card-subtitle">Select any of the 9 standardized input categories to test inputs live against the compiled regex rules.</p>
+    </div>
+    <div class="card-body">
+      <div class="grid grid-2 mb-6">
+        <!-- Category Selector -->
+        <div class="form-group">
+          <label for="tester-field" class="form-label font-bold">Validation Category</label>
+          <select id="tester-field" class="form-control">
+            <option value="username">1. Username (4–20 alphanumeric, starts with letter)</option>
+            <option value="fullName">2. Full Name (Unicode letters, hyphens, apostrophes)</option>
+            <option value="email">3. Email Address (RFC 5322 compliant, no double dots)</option>
+            <option value="password">4. Password (8–64 chars, uppercase, lowercase, digit, symbol)</option>
+            <option value="phoneIN">5. Indian Mobile Phone (10 digits, starts 6–9, optional +91)</option>
+            <option value="dob">6. Date of Birth (YYYY-MM-DD, leap year &amp; past validation)</option>
+            <option value="pinCode">7. PIN Code (6 digits, no leading 0)</option>
+            <option value="countryQuery">8. Country Search Query (2–56 letters)</option>
+            <option value="comment">9. Community Comment (3–500 chars, no HTML tags)</option>
+          </select>
+        </div>
+
+        <!-- Pattern Display -->
+        <div class="form-group">
+          <label class="form-label font-bold">Compiled Regex Pattern</label>
+          <div class="code-preview-box">
+            <code id="tester-pattern" class="font-mono text-sm text-primary">^[a-zA-Z][a-zA-Z0-9_]{3,19}$</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description and Error Rule -->
+      <div class="alert alert-info mb-6" id="tester-description-box">
+        <strong>Validation Rule:</strong> <span id="tester-message">4–20 characters; start with a letter; letters, numbers and underscore only.</span>
+      </div>
+
+      <!-- Input Testing Field -->
+      <div class="form-group mb-4">
+        <label for="tester-input" class="form-label font-bold">Input Value Under Test</label>
+        <div class="input-group">
+          <input
+            type="text"
+            id="tester-input"
+            class="form-control font-mono"
+            placeholder="Type value to validate..."
+            value="OmSongire23"
+          >
+          <button type="button" class="btn btn-primary" id="tester-btn">Validate Input</button>
+        </div>
+      </div>
+
+      <!-- Predefined Boundary Examples -->
+      <div class="flex-between flex-wrap gap-2 mb-6">
+        <div class="example-buttons flex gap-2">
+          <span class="text-xs text-muted self-center">Predefined Cases:</span>
+          <button type="button" class="btn btn-xs btn-outline" id="btnValidExample">Load Valid Example</button>
+          <button type="button" class="btn btn-xs btn-outline" id="btnInvalidExample">Load Invalid Example</button>
+        </div>
+        <!-- Live Result Indicator -->
+        <div class="result-badge-container">
+          <span id="tester-result" class="badge badge-lg badge-success">READY</span>
+        </div>
+      </div>
+
+      <div id="tester-feedback-text" class="text-sm font-medium"></div>
+    </div>
+  </div>
+
+  <!-- Quality Lab Section 2: Automated STQA Suite Runner -->
+  <div class="card mb-8" id="lab-suite">
+    <div class="card-header flex-between flex-wrap gap-4">
+      <div>
+        <h2 class="card-title text-xl">2. Automated STQA Test Suite Runner</h2>
+        <p class="card-subtitle">Run all 124 regression and boundary test cases against the server-side validator engine.</p>
+      </div>
+      <div class="flex gap-2">
+        <button type="button" class="btn btn-primary" id="runSuiteBtn">Execute Test Suite</button>
+        <button type="button" class="btn btn-outline" id="exportJsonBtn" disabled>Export JSON</button>
+        <button type="button" class="btn btn-outline" id="exportCsvBtn" disabled>Export CSV</button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <!-- Summary Metrics Grid -->
+      <div class="grid grid-4 mb-6" id="suiteMetricsGrid" style="display: none;">
+        <div class="card stat-card">
+          <div class="stat-label">Total Tests Executed</div>
+          <div class="stat-value font-mono" id="suiteTotalTests">0</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label text-success">Passed Cases</div>
+          <div class="stat-value font-mono text-success" id="suitePassedTests">0</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label text-danger">Failed Cases</div>
+          <div class="stat-value font-mono text-danger" id="suiteFailedTests">0</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-label text-primary">Pass Rate</div>
+          <div class="stat-value font-mono text-primary" id="suitePassRate">0%</div>
+        </div>
+      </div>
+
+      <!-- Test Results Table -->
+      <div class="table-responsive" id="suiteTableContainer" style="display: none; max-height: 480px; overflow-y: auto;">
+        <table class="data-table" id="suiteResultsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Category</th>
+              <th>Input Under Test</th>
+              <th>Expected</th>
+              <th>Actual</th>
+              <th>Outcome</th>
+              <th>STQA Notes</th>
+            </tr>
+          </thead>
+          <tbody id="suiteResultsBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-center py-8 text-muted" id="suiteEmptyNotice">
+        Click <strong>Execute Test Suite</strong> to run the full test battery and inspect execution results.
+      </div>
+    </div>
+  </div>
+
+  <!-- Quality Lab Section 3: STQA Conceptual Framework Reference -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title text-xl">3. STQA Testing Concepts Demonstrated in this Project</h2>
+    </div>
+    <div class="card-body">
+      <div class="grid grid-2 gap-6">
+        <div>
+          <h3 class="font-bold text-base text-primary mb-1">Equivalence Partitioning (EP)</h3>
+          <p class="text-sm text-muted mb-4">Divides input domains into valid and invalid equivalence classes where all members are treated identically by the software logic. Example: For PIN code, 6-digit numbers [100000–999999] form the valid partition, while numbers &lt; 100000 or with non-digits form invalid partitions.</p>
+
+          <h3 class="font-bold text-base text-primary mb-1">Boundary Value Analysis (BVA)</h3>
+          <p class="text-sm text-muted">Focuses on test cases at extreme ends of input ranges. Example: Comment length boundaries tested at 2 characters (too short), 3 characters (min valid), 500 characters (max valid), and 501 characters (rejected).</p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-base text-primary mb-1">Selenium 4 Page Object Model (POM)</h3>
+          <p class="text-sm text-muted mb-4">Decouples web page locators and user actions from test logic, improving test maintenance, reducing test script duplication, and making tests easy to explain in practical examinations.</p>
+
+          <h3 class="font-bold text-base text-primary mb-1">Server-Side Independent Validation</h3>
+          <p class="text-sm text-muted">Client-side JavaScript provides instant user feedback, but the backend Python layer independently parses and validates all requests to defend against CSRF, injection, and manipulated payloads.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Pattern dictionary passed from server
+  const patternsMeta = {{ patterns | tojson }};
+
+  const sampleCases = {
+    username: { valid: "Rajesh_Kumar99", invalid: "123user" },
+    fullName: { valid: "Dr. Ananya Sharma", invalid: "Bob123" },
+    email: { valid: "user@example.com", invalid: "user@@example..com" },
+    password: { valid: "Str0ng#Pass2026", invalid: "password123" },
+    phoneIN: { valid: "9876543210", invalid: "5876543210" },
+    dob: { valid: "1998-05-21", invalid: "2099-01-01" },
+    pinCode: { valid: "411001", invalid: "011001" },
+    countryQuery: { valid: "India", invalid: "I" },
+    comment: { valid: "Stay safe and wear a mask indoors!", invalid: "<script>alert(1)</" + "script>" }
+  };
+
+  const selectField = document.getElementById('tester-field');
+  const patternDisplay = document.getElementById('tester-pattern');
+  const messageDisplay = document.getElementById('tester-message');
+  const inputEl = document.getElementById('tester-input');
+  const btnValidate = document.getElementById('tester-btn');
+  const resultBadge = document.getElementById('tester-result');
+  const feedbackText = document.getElementById('tester-feedback-text');
+
+  function updateCategory() {
+    const f = selectField.value;
+    const meta = patternsMeta[f];
+    if (meta) {
+      patternDisplay.textContent = meta.pattern;
+      messageDisplay.textContent = meta.message;
+    }
+    resultBadge.textContent = "READY";
+    resultBadge.className = "badge badge-lg badge-outline";
+    feedbackText.textContent = "";
+  }
+
+  selectField.addEventListener('change', updateCategory);
+
+  document.getElementById('btnValidExample').addEventListener('click', function() {
+    const f = selectField.value;
+    if (sampleCases[f]) {
+      inputEl.value = sampleCases[f].valid;
+      btnValidate.click();
+    }
+  });
+
+  document.getElementById('btnInvalidExample').addEventListener('click', function() {
+    const f = selectField.value;
+    if (sampleCases[f]) {
+      inputEl.value = sampleCases[f].invalid;
+      btnValidate.click();
+    }
+  });
+
+  btnValidate.addEventListener('click', async function() {
+    const f = selectField.value;
+    const val = inputEl.value;
+
+    resultBadge.textContent = "CHECKING...";
+    resultBadge.className = "badge badge-lg badge-outline";
+
+    try {
+      const resp = await fetch('/api/quality-lab/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ field: f, value: val })
+      });
+      const data = await resp.json();
+
+      if (data.valid) {
+        resultBadge.textContent = "VALID (PASS)";
+        resultBadge.className = "badge badge-lg badge-success";
+        feedbackText.textContent = "Input successfully passed all regex and semantic validation constraints.";
+        feedbackText.className = "text-sm font-medium text-success";
+      } else {
+        resultBadge.textContent = "INVALID (FAIL)";
+        resultBadge.className = "badge badge-lg badge-danger";
+        feedbackText.textContent = data.error || "Input failed validation rules.";
+        feedbackText.className = "text-sm font-medium text-danger";
+      }
+    } catch (e) {
+      resultBadge.textContent = "ERROR";
+      resultBadge.className = "badge badge-lg badge-danger";
+      feedbackText.textContent = "Network error validating input.";
+    }
+  });
+
+  // Automated suite runner
+  let suiteData = null;
+  const runSuiteBtn = document.getElementById('runSuiteBtn');
+  const exportJsonBtn = document.getElementById('exportJsonBtn');
+  const exportCsvBtn = document.getElementById('exportCsvBtn');
+
+  runSuiteBtn.addEventListener('click', async function() {
+    runSuiteBtn.disabled = true;
+    runSuiteBtn.textContent = "Executing Test Suite...";
+
+    try {
+      const resp = await fetch('/api/quality-lab/run-suite', { method: 'POST' });
+      const data = await resp.json();
+      suiteData = data;
+
+      document.getElementById('suiteTotalTests').textContent = data.total;
+      document.getElementById('suitePassedTests').textContent = data.passed;
+      document.getElementById('suiteFailedTests').textContent = data.failed;
+      document.getElementById('suitePassRate').textContent = data.pass_rate;
+
+      const tbody = document.getElementById('suiteResultsBody');
+      tbody.innerHTML = '';
+
+      data.results.forEach((r, idx) => {
+        const tr = document.createElement('tr');
+        const pass = r.status === 'PASS';
+        tr.innerHTML = `
+          <td class="font-mono text-xs text-muted">${idx + 1}</td>
+          <td><span class="badge badge-sm badge-outline">${r.field}</span></td>
+          <td class="font-mono text-xs">${r.input.replace(/</g, '&lt;')}</td>
+          <td><span class="badge badge-xs ${r.expected === 'PASS' ? 'badge-success' : 'badge-danger'}">${r.expected}</span></td>
+          <td><span class="badge badge-xs ${r.actual === 'PASS' ? 'badge-success' : 'badge-danger'}">${r.actual}</span></td>
+          <td><strong class="${pass ? 'text-success' : 'text-danger'}">${r.status}</strong></td>
+          <td class="text-xs text-muted">${r.note || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('suiteMetricsGrid').style.display = 'grid';
+      document.getElementById('suiteTableContainer').style.display = 'block';
+      document.getElementById('suiteEmptyNotice').style.display = 'none';
+
+      exportJsonBtn.disabled = false;
+      exportCsvBtn.disabled = false;
+    } catch (err) {
+      alert("Error executing test suite: " + err);
+    } finally {
+      runSuiteBtn.disabled = false;
+      runSuiteBtn.textContent = "Re-Execute Test Suite";
+    }
+  });
+
+  exportJsonBtn.addEventListener('click', function() {
+    if (!suiteData) return;
+    const blob = new Blob([JSON.stringify(suiteData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'stqa-validation-suite-results.json';
+    a.click();
+  });
+
+  exportCsvBtn.addEventListener('click', function() {
+    if (!suiteData) return;
+    let csv = "Index,Field,Input,Expected,Actual,Status,Note\n";
+    suiteData.results.forEach((r, idx) => {
+      csv += `"${idx+1}","${r.field}","${r.input.replace(/"/g, '""')}","${r.expected}","${r.actual}","${r.status}","${(r.note||'').replace(/"/g, '""')}"\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'stqa-validation-suite-results.csv';
+    a.click();
+  });
+
+  // Initialize display
+  updateCategory();
+</script>
+{% endblock %}

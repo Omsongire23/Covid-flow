@@ -1,0 +1,1 @@
+{"content":"Python sqlite3 documentation prescribes qmark or named DB-API placeholders rather than string interpolation and describes explicit commit and rollback transaction boundaries.","source":"web","provider":"websearch","confidence":"MEDIUM","fetched_at":"2026-10-31T17:22:24.668Z","ttl":86400000,"kind":"docs"}

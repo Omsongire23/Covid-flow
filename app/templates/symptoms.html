@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+
+{% block title %}COVID-19 Symptoms — Self-Assessment Guide{% endblock %}
+{% block meta_description %}Identify COVID-19 symptoms: common signs, less common indicators, serious emergency symptoms and what action to take. Based on WHO clinical guidelines.{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="dash-hero" style="padding-block: var(--space-12) var(--space-10); min-height:unset;">
+  <div class="dash-hero-orb dash-hero-orb--purple" style="opacity:0.35;" aria-hidden="true"></div>
+  <div class="container">
+    <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+      <ol>
+        <li><a href="{{ url_for('public.index') }}">Dashboard</a></li>
+        <li aria-current="page">Symptoms</li>
+      </ol>
+    </nav>
+    <div class="sym-page-badge">Self-Assessment Reference</div>
+    <h1 class="dash-hero-title" style="font-size: clamp(1.8rem,3.5vw,2.8rem); margin-bottom:var(--space-3);" id="symptomsPageHeading">
+      COVID-19 Symptoms &amp;
+      <span class="dash-hero-gradient-text">Warning Signs</span>
+    </h1>
+    <p class="dash-hero-subtitle" style="margin-bottom:0; max-width:640px;">
+      Recognize initial indications of SARS-CoV-2 infection and identify critical symptoms that require immediate emergency attention.
+    </p>
+  </div>
+</div>
+
+<div class="container section">
+
+  <!-- Emergency Alert -->
+  <div class="sym-emergency-alert" role="alert" id="emergencySignsAlert" aria-labelledby="emergencyAlertTitle">
+    <div class="sym-emergency-icon" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <div class="sym-emergency-body">
+      <h3 class="sym-emergency-title" id="emergencyAlertTitle">Emergency Warning Signs — Call <strong>1075 / 112</strong> Immediately</h3>
+      <p class="sym-emergency-subtitle">If anyone shows these critical indications, seek emergency medical care at once:</p>
+      <ul class="sym-emergency-list">
+        {% set emergency_signs = content.symptoms.emergency or content.symptoms.serious or [] %}
+        {% if emergency_signs %}
+          {% for e in emergency_signs %}
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>
+              {% if e is mapping %}
+                <strong>{{ e.name }}</strong>{% if e.action %} — <em>{{ e.action }}</em>{% endif %}
+              {% else %}
+                <strong>{{ e }}</strong>
+              {% endif %}
+            </span>
+          </li>
+          {% endfor %}
+        {% else %}
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Difficulty breathing or severe shortness of breath</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Persistent pain or pressure in the chest</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> New confusion or inability to wake or stay awake</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Pale, gray, or blue-colored skin, lips, or nail beds (SpO2 below 94%)</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Symptom Cards Grid -->
+  <div class="sym-grid">
+
+    <!-- Card 1: Most Common Symptoms -->
+    <div class="sym-card sym-card--primary js-stagger-item" id="commonSymptomsCard">
+      <div class="sym-card-accent-bar"></div>
+      <div class="sym-card-header">
+        <div class="sym-card-icon-wrap sym-icon--primary" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div>
+          <div class="sym-card-eyebrow">Most Frequently Reported</div>
+          <h2 class="sym-card-title">Most Common Symptoms</h2>
+        </div>
+        <span class="sym-severity-pill sym-severity-pill--mild">Mild–Moderate</span>
+      </div>
+
+      <ul class="sym-list" aria-label="Most common COVID-19 symptoms">
+        {% set common_items = content.symptoms.common or content.symptoms.most_common or [] %}
+        {% for s in common_items %}
+          {% if s is mapping %}
+            {% set s_name = s.name or s.title or 'Clinical Indicator' %}
+            {% set s_desc = s.desc or s.description or '' %}
+            {% set s_sev = s.severity or 'Mild–Moderate' %}
+            {% set s_freq = s.frequency or '' %}
+            {% set s_icon = s.icon or 'activity' %}
+          {% else %}
+            {% set s_name = s|string %}
+            {% set s_desc = 'Frequently documented primary manifestation of infection.' %}
+            {% set s_sev = 'Mild–Moderate' %}
+            {% set s_freq = 'Common' %}
+            {% set s_icon = 'activity' %}
+          {% endif %}
+          <li class="sym-list-item">
+            <div class="sym-item-icon-box sym-item-icon-box--primary" aria-hidden="true">
+              {% if s_icon == 'thermometer' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+              {% elif s_icon == 'cough' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="3"/></svg>
+              {% elif s_icon == 'sparkles' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+              {% else %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              {% endif %}
+            </div>
+            <div class="sym-item-body">
+              <div class="sym-item-header">
+                <span class="sym-item-name">{{ s_name }}</span>
+                <div class="sym-item-meta">
+                  {% if s_freq %}<span class="sym-badge sym-badge-freq">{{ s_freq }}</span>{% endif %}
+                  {% if s_sev %}<span class="sym-badge sym-badge-sev">{{ s_sev }}</span>{% endif %}
+                </div>
+              </div>
+              {% if s_desc %}<p class="sym-item-desc">{{ s_desc }}</p>{% endif %}
+            </div>
+          </li>
+        {% else %}
+          <li class="sym-list-item">
+            <div class="sym-item-icon-box sym-item-icon-box--primary" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+            </div>
+            <div class="sym-item-body">
+              <div class="sym-item-header">
+                <span class="sym-item-name">Fever or Chills</span>
+                <span class="sym-badge sym-badge-sev">Mild–Moderate</span>
+              </div>
+              <p class="sym-item-desc">High body temperature (≥ 38°C / 100.4°F), rigors, and sweating.</p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <div class="sym-card-footer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Symptoms typically appear 2–14 days after exposure
+      </div>
+    </div>
+
+    <!-- Card 2: Less Common Symptoms -->
+    <div class="sym-card sym-card--warn js-stagger-item" id="lessCommonSymptomsCard">
+      <div class="sym-card-accent-bar"></div>
+      <div class="sym-card-header">
+        <div class="sym-card-icon-wrap sym-icon--warn" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        </div>
+        <div>
+          <div class="sym-card-eyebrow">May Also Occur</div>
+          <h2 class="sym-card-title">Less Common Symptoms</h2>
+        </div>
+        <span class="sym-severity-pill sym-severity-pill--warn">Mild</span>
+      </div>
+
+      <ul class="sym-list" aria-label="Less common COVID-19 symptoms">
+        {% set less_items = content.symptoms.less_common or [] %}
+        {% for s in less_items %}
+          {% if s is mapping %}
+            {% set s_name = s.name or s.title or 'Secondary Sign' %}
+            {% set s_desc = s.desc or s.description or '' %}
+            {% set s_sev = s.severity or 'Mild' %}
+            {% set s_freq = s.frequency or '' %}
+            {% set s_icon = s.icon or 'alert-circle' %}
+          {% else %}
+            {% set s_name = s|string %}
+            {% set s_desc = 'Secondary indicator occurring in moderate patient subgroups.' %}
+            {% set s_sev = 'Mild' %}
+            {% set s_freq = 'Less Common' %}
+            {% set s_icon = 'alert-circle' %}
+          {% endif %}
+          <li class="sym-list-item">
+            <div class="sym-item-icon-box sym-item-icon-box--warn" aria-hidden="true">
+              {% if s_icon == 'mic-off' or s_icon == 'throat' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+              {% elif s_icon == 'shield-alert' or s_icon == 'headache' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              {% elif s_icon == 'wind' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>
+              {% elif s_icon == 'eye' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              {% else %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+              {% endif %}
+            </div>
+            <div class="sym-item-body">
+              <div class="sym-item-header">
+                <span class="sym-item-name">{{ s_name }}</span>
+                <div class="sym-item-meta">
+                  {% if s_freq %}<span class="sym-badge sym-badge-freq">{{ s_freq }}</span>{% endif %}
+                  {% if s_sev %}<span class="sym-badge sym-badge-sev sym-badge-sev--warn">{{ s_sev }}</span>{% endif %}
+                </div>
+              </div>
+              {% if s_desc %}<p class="sym-item-desc">{{ s_desc }}</p>{% endif %}
+            </div>
+          </li>
+        {% else %}
+          <li class="sym-list-item">
+            <div class="sym-item-icon-box sym-item-icon-box--warn" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+            </div>
+            <div class="sym-item-body">
+              <div class="sym-item-header">
+                <span class="sym-item-name">Sore Throat</span>
+                <span class="sym-badge sym-badge-sev sym-badge-sev--warn">Mild</span>
+              </div>
+              <p class="sym-item-desc">Scratchy throat, pharyngeal irritation, and painful swallowing.</p>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <div class="sym-card-footer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Some patients experience few or no symptoms (asymptomatic)
+      </div>
+    </div>
+
+    <!-- Card 3: Serious Symptoms -->
+    <div class="sym-card sym-card--danger js-stagger-item" id="seriousSymptomsCard">
+      <div class="sym-card-accent-bar"></div>
+      <div class="sym-card-header">
+        <div class="sym-card-icon-wrap sym-icon--danger" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="sym-card-eyebrow">Requires Medical Attention</div>
+          <h2 class="sym-card-title">Serious Symptoms</h2>
+        </div>
+        <span class="sym-severity-pill sym-severity-pill--severe">Critical</span>
+      </div>
+
+      <ul class="sym-list" aria-label="Serious COVID-19 symptoms requiring immediate attention">
+        {% set serious_items = content.symptoms.emergency or content.symptoms.serious or [] %}
+        {% for s in serious_items %}
+          {% if s is mapping %}
+            {% set s_name = s.name or s.title or 'Emergency Sign' %}
+            {% set s_desc = s.desc or s.description or '' %}
+            {% set s_action = s.action or '' %}
+            {% set s_sev = s.severity or 'Critical' %}
+            {% set s_icon = s.icon or 'alert-triangle' %}
+          {% else %}
+            {% set s_name = s|string %}
+            {% set s_desc = 'Critical clinical red flag requiring emergency hospital evaluation.' %}
+            {% set s_action = 'Seek immediate emergency clinical care.' %}
+            {% set s_sev = 'Critical' %}
+            {% set s_icon = 'alert-triangle' %}
+          {% endif %}
+          <li class="sym-list-item">
+            <div class="sym-item-icon-box sym-item-icon-box--danger" aria-hidden="true">
+              {% if s_icon == 'lungs' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18c0-3 2-6 6-6s6 3 6 6"/><path d="M12 2v10"/><path d="M4 12c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+              {% elif s_icon == 'heart' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              {% elif s_icon == 'zap-off' or s_icon == 'brain' %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              {% else %}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              {% endif %}
+            </div>
+            <div class="sym-item-body">
+              <div class="sym-item-header">
+                <span class="sym-item-name">{{ s_name }}</span>
+                <span class="sym-badge sym-badge-sev sym-badge-sev--danger">{{ s_sev }}</span>
+              </div>
+              {% if s_desc %}<p class="sym-item-desc">{{ s_desc }}</p>{% endif %}
+              {% if s_action %}
+                <div class="sym-item-action">
+                  <strong>Action:</strong> {{ s_action }}
+                </div>
+              {% endif %}
+            </div>
+          </li>
+        {% else %}
+          <li class="sym-list-item">
+            <div class="sym-item-icon-box sym-item-icon-box--danger" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="sym-item-body">
+              <div class="sym-item-header">
+                <span class="sym-item-name">Difficulty breathing or shortness of breath</span>
+                <span class="sym-badge sym-badge-sev sym-badge-sev--danger">Critical</span>
+              </div>
+              <p class="sym-item-desc">Severe dyspnea at rest, gasping, or SpO2 oxygen level below 94%.</p>
+              <div class="sym-item-action">
+                <strong>Action:</strong> Call 1075 / 112 immediately for emergency oxygen.
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <div class="sym-card-footer sym-card-footer--danger">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        If experiencing these — call <strong>1075</strong> or <strong>112</strong> immediately
+      </div>
+    </div>
+
+  </div><!-- /sym-grid -->
+
+  <!-- What To Do Panel -->
+  <div class="sym-action-panel" id="symptomsActionPanel">
+    <div class="sym-action-icon" aria-hidden="true">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div class="sym-action-body">
+      <h3 class="sym-action-title">What To Do If You Feel Sick</h3>
+      <p class="sym-action-desc">Stay home and isolate in a well-ventilated room away from family members. Monitor blood oxygen saturation (SpO2) with a pulse oximeter — seek emergency care if it drops below 94%. Consult a qualified medical professional for diagnosis and clinical treatment guidance.</p>
+      <div class="sym-action-links">
+        <a href="{{ url_for('public.helplines') }}" class="btn btn-primary btn-sm" id="symptomsHelplinesBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.01z"/></svg>
+          Find Helpline Numbers
+        </a>
+        <a href="{{ url_for('public.prevention') }}" class="btn btn-outline btn-sm" id="symptomsPrevBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Prevention Guidelines
+        </a>
+      </div>
+    </div>
+    {% if content.symptoms.source %}
+    <div class="sym-action-source">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Source: <a href="{{ content.symptoms.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ content.symptoms.source }}</a>
+    </div>
+    {% endif %}
+  </div>
+
+</div><!-- /container -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+  var items = document.querySelectorAll('.js-stagger-item');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, i) {
+      if (entry.isIntersecting) {
+        setTimeout(function() {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0) scale(1)';
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.06 });
+  items.forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px) scale(0.97)';
+    el.style.transition = 'opacity 0.42s cubic-bezier(0.34,1.56,0.64,1), transform 0.42s cubic-bezier(0.34,1.56,0.64,1)';
+    observer.observe(el);
+  });
+})();
+</script>
+{% endblock %}
