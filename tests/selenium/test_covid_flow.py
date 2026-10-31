@@ -143,7 +143,9 @@ class CovidFlowSeleniumTests(unittest.TestCase):
         # Verify the HTML-like payload is available for the server-side rejection check.
         payload = "<script>alert(1)</script>"
         field.send_keys(payload)
-        self.assertEqual(field.get_attribute("value"), payload)
+        field.send_keys(Keys.TAB)
+        self.wait.until(lambda d: "is-invalid" in field.get_attribute("class"))
+        self.assertTrue(self.visible_errors(), "HTML-like comment should be rejected by client validation")
         # Do not submit a hostile payload into a shared test database.
 
     def test_tc09_statistics_page_renders_chart_canvas(self):
