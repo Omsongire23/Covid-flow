@@ -33,3 +33,10 @@
 - **Fully Covered Requirements:** 13 (100%)
 - **Total Linked Test Cases:** 153 discrete test cases
 - **Defects Discovered During Traceability Execution:** 3 (all fixed and verified in `docs/DEFECT_LOG.md`)
+
+
+## 3. Browser Automation Coverage
+
+Selenium WebDriver 4 / Python browser checks are implemented in `tests/selenium/test_covid_flow.py`. They cover signup validation, username boundaries, login error handling, guest community behavior, comment length constraints, statistics chart presence, and programme consent controls. See `docs/SELENIUM_TESTING.md` for execution instructions.
+
+**Status:** Automation added; execution pending. Existing requirement coverage claims above refer to previously recorded evidence and are not retroactively attributed to Selenium.

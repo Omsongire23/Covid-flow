@@ -110,3 +110,10 @@ All tests are verified against the active production-grade Docker container topo
 - `docs/DEFECT_LOG.md`: Formal registry of genuine defects discovered, root causes, and verification notes.
 - `docs/TEST_REPORT.md`: Comprehensive test execution log with empirical output summaries.
 - `tests/run-all.sh`: Automated master test execution script.
+
+
+## 10. Selenium Browser Automation (added)
+
+A Python Selenium 4 suite is maintained in `tests/selenium/test_covid_flow.py`. It adds browser-level checks for signup validation, username boundaries, login errors, guest community behavior, comment length, statistics chart rendering, and programme-registration consent. Setup and execution instructions are in `docs/SELENIUM_TESTING.md`.
+
+The suite complements the existing Node.js, PHP CLI, curl and Bash suites. Selenium execution results must be added to the final report only after an actual run. Payments and third-party API uptime remain out of scope.
