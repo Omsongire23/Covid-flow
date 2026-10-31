@@ -199,3 +199,25 @@ All regular expressions are tested against both Node.js (ECMAScript `RegExp(p, '
 - `TC-REG-COMMENT-16`: 499 'x's + 'éx' (501 characters) &rarr; Expected: Invalid &bull; **Passed (Both)**
 - `TC-REG-COMMENT-17`: `""` (empty) &rarr; Expected: Invalid &bull; **Passed (Both)**
 - `TC-REG-REDOS-COMMENT`: 100k hostile '&lt;' &rarr; Execution: 0.11ms (&lt; 200ms) &bull; **Passed (Both)**
+
+
+---
+
+## Selenium Browser Regression Cases
+
+See `docs/SELENIUM_TESTING.md` for setup and execution.
+
+| ID | Scenario | Test data | Expected result |
+|---|---|---|---|
+| TC01 | Signup valid username | john_doe | No inline validation error |
+| TC02 | Signup invalid username | 1bad name | Inline validation error |
+| TC03 | Signup invalid email | user@@example | Inline validation error |
+| TC04 | Username boundaries | Lengths 3, 4, 20, 21 | Reject 3 and 21; accept 4 and 20 |
+| TC05 | Login invalid credentials | Nonexistent test username | Generic login error |
+| TC06 | Guest community access | Guest session | Login prompt shown; page remains public |
+| TC07 | Comment maximum length | 500 and 501 characters | Textarea enforces 500-character maximum (authenticated) |
+| TC08 | HTML-like comment input | Script-like text | Input prepared but not submitted to shared database; server validator tested separately |
+| TC09 | Statistics chart | None | Trend chart canvas is present |
+| TC10 | Registration consent | Unchecked checkbox | Consent control is required (authenticated) |
+
+**Execution status:** Added, not yet executed. Do not count as passed until browser execution is complete.
