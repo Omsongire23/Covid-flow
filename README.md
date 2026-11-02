@@ -420,16 +420,9 @@ Medical information is provided for general awareness and attributed to official
 
 > **Medical disclaimer:** COVID-FLOW is an academic information and testing project. It is not a diagnostic tool and does not replace professional medical advice, diagnosis or treatment. In an emergency, contact local emergency services or the appropriate official health helpline.
 
----
+14. Author
+Om Songire — @Omsongire23
 
-## 👤 Author
+GitHub repository: github.com/Omsongire23/Covid-flow
 
-**Om Songire** · [@Omsongire23](https://github.com/Omsongire23) · [LinkedIn](https://linkedin.com/in/omsongire)
-
-Repository: [github.com/Omsongire23/Covid-flow](https://github.com/Omsongire23/Covid-flow)
-
-<div align="center">
-
-⭐ If this project helped you, consider starring the repository.
-
-</div>
+If you reuse this project, retain the relevant data attribution and medical disclaimer.
