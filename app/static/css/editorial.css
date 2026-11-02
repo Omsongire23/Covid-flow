@@ -201,8 +201,7 @@ p { max-width: 68ch; }
 .form-control:focus { box-shadow: 0 0 0 3px var(--primary-glow); border-color: var(--primary); }
 
 .site-footer { background: var(--text); color: var(--surface); border-top: 0; margin-top: 0; }
-.footer-disclaimer-band { background: #25343a; border-bottom-color: #506168; }
-.disclaimer-inner, .footer-desc, .footer-text-sm, .footer-bottom { color: #c4cfcc; }
+.footer-desc, .footer-text-sm, .footer-bottom { color: #c4cfcc; }
 .footer-grid { padding-block: 5rem; grid-template-columns: 1.6fr 1fr 1fr 1fr; }
 .footer-brand { color: var(--surface); font-family: var(--font-heading); font-size: 1.8rem; }
 .footer-heading { color: #f7eee2; font-family: var(--font); font-size: .7rem; letter-spacing: .13em; }
