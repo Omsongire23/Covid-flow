@@ -27,11 +27,13 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/editorial.css') }}">
 
   <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/logo.svg') }}">
   {% block extra_head %}{% endblock %}
 </head>
 <body class="page-wrapper">
+  <a class="skip-link" href="#mainContent">Skip to content</a>
   <!-- Top Announcement Bar -->
   <aside class="announcement-bar" aria-label="Public Health Advisory">
     <div class="container announcement-content">
@@ -206,6 +208,7 @@
 
   <!-- Vendored Chart.js and Vanilla JS -->
   <script src="{{ url_for('static', filename='vendor/chart.umd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/editorial.js') }}" defer></script>
   <script>
     // Theme toggle handling
     document.getElementById('themeToggleBtn')?.addEventListener('click', function() {
